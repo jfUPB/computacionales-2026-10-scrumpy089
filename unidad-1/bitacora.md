@@ -6,22 +6,22 @@
 
 ### Actividad 01
 
-**¿Qué sucede?**
+**_¿Qué sucede?_**
 
 El programa carga dos valores en los registros A y D, realiza una suma entre ellos y guarda un valor en la dirección de memoria 16, al final entra en un ciclo infinito
 
 
-**¿Qué valor se almacena en la dirección de memoria 16?**
+**_¿Qué valor se almacena en la dirección de memoria 16?_**
 
 Se almacena el valor numero 3
 
 
-**¿Por qué crees que es ese valor?**
+**_¿Por qué crees que es ese valor?_**
 
 Porque en la linea de código aparece "M=D" siendo "M" refiriendose a la memoria RAM y "D" a un registro que fue almacenado con dicho valor anteriormente
 
 
-**¿Qué instrucciones se ejecutan en cada ciclo Fetch-Decode-Execute?**
+**_¿Qué instrucciones se ejecutan en cada ciclo Fetch-Decode-Execute?_**
 
 - Se guarda el valor 1 en el registro A
 - Hace que el registro D tenga el mismo valor del registro A
@@ -33,7 +33,7 @@ Porque en la linea de código aparece "M=D" siendo "M" refiriendose a la memoria
 - Genera un valor que, al final no se guarda y despues hace un salto a la memoria ROM que dice en el registro A
 
 
-**¿Qué cambios observas en el contenido de la memoria y los registros?**
+**_¿Qué cambios observas en el contenido de la memoria y los registros?_**
 
 El registro A y D cambian durante la ejecución del programa, y como resultado final el valor 3 queda almacenado en la dirección de memoria 16, los registros PC y A quedan con el valor 7 y el registro queda con el valor de 3. El programa termina en un bucle infinito al ejecutar "0;JMP" hacia la etiqueta END
 
@@ -56,4 +56,5 @@ M=D
 
 
 ## Bitácora de reflexión
+
 
