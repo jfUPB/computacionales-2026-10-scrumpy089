@@ -60,7 +60,8 @@ M=D
 ALU (Arithmetic Logic Unit) es la parte de la CPU que suma, resta, niega, compara o hace operaciones logicas(AND, OR, etc.)
 
 Una instrucción que usa la ALU es:
-```
+
+```assembly
 D=D-A
 ```
 Esta instrucción utiliza la ALU para realizar una resta entre los valores almacenados en los registros D y A
@@ -81,7 +82,7 @@ Para leer el teclado, el programa accede a la dirección de memoria @KBD y obtie
 
 **_Identifica un bucle en el programa y explica su funcionamiento_**
 
-```
+``` assembly
 @READKEYBOARD
 0;JMP
 ```
@@ -90,7 +91,7 @@ Este salto incondicional hace que el programa vuelva constantemente a la etiquet
 
 ### Actividad 3
 
-```
+``` assembly
 @5
 D=M
 @10
@@ -119,6 +120,7 @@ M=1
 
 
 ## Bitácora de reflexión
+
 
 
 
