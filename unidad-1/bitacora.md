@@ -172,6 +172,69 @@ M=D
 
 ## Bitácora de reflexión
 
+### Actividad 05
+
+1. **_Describe con tus palabras las tres fases del ciclo Fetch-Decode-Execute. ¿Qué rol juega el Program Counter (PC) en este ciclo?_**
+
+El Fetch es cuando la CPU busca y obtiene la instrucción a relizar, Decode es cuando la decodifica la intrucción y Execute es cuandorealiza la instrucción recibida. El program Counter es, digamos, el orden en el que la CPU lee las instrucciones, que estan guardadas en la ROM 
+
+2. **_¿Cuál es la diferencia fundamental entre una instrucción-A (que empieza con @) y una instrucción-C (que involucra D, M, A, etc.) en el lenguaje ensamblador de Hack? Da un ejemplo de cada una_**
+
+Las intrucciones tipo A se encargan principalmente en guardar / establecer valores o hacer referencia a una localizacion, mientras que las instrucciones de tipo C se encargan de hacer calculos con los valores guardados, asignaciones y saltos
+
+Ejemplos:
+- tipo A:
+```
+@10
+```
+
+- tipo C:
+```asm
+M=D+A
+```
+
+3. **_Explica la función de los siguientes componentes del computador Hack: el registro D, el registro A y la ALU_**
+
+- El registro A es un registro que guarda direcciones o valores
+- El registro D guarda datos temporales, resultados de operaciones, sirve para comparar valores, transportar información
+- La ALU es la unidad logica la cual se encarga de realizar operaciones en la computadora
+
+4. **_¿Cómo se implementa un salto condicional en Hack? Describe un ejemplo (p. ej., saltar si el valor de D es mayor que cero)_**
+
+Un salto se puede utilizar usando las etiquetas, sirviendo como puntos de referencia para que el CPU sepa hacia donde realizar el salto y los diferentes tipos de _Jumps_, en el que sus condiciones comparan el resultado con 0
+EJ:
+```
+@5
+D=M
+@10
+D=D-A
+@MENOR
+D;JLT
+
+@7
+M=0
+@FINAL
+0;JMP
+
+(MENOR)
+@7
+M=1
+
+@FINAL
+(FINAL)
+0;JMP
+
+```
+
+5. **_¿Cómo se implementa un loop en el computador Hack? Describe un ejemplo (p. ej., un loop que decremente un valor hasta que llegue a cero)_**
+
+
+
+6. **_¿Cuál es la diferencia entre la instrucción D=M y la instrucción M=D?_**
+
+D=M esta guardando el valor que esta en la memoria #n mientras que M=D esta registrando un valor en la memoria #n
+
+7. **_Describe brevemente qué se necesita para leer un valor del teclado (KBD) y para “pintar” un pixel en la pantalla (SCREEN)_**
 
 
 
