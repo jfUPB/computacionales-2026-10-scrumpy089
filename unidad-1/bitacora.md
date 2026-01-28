@@ -117,6 +117,11 @@ M=1
 0;JMP
 
 ```
+
+
+
+## Bitácora de aplicación 
+
 ### Actividad 04
 
 Crea un programa que use un ciclo para sumar los números del 1 al 5 y guarde el resultado en la dirección de memoria 12
@@ -165,12 +170,8 @@ M=D
 <img width="1111" height="801" alt="image" src="https://github.com/user-attachments/assets/3f3f6482-9a6c-44df-ac1b-fbf4299435a4" />
 
 
-
-## Bitácora de aplicación 
-
-
-
 ## Bitácora de reflexión
+
 
 
 
