@@ -91,6 +91,10 @@ Este salto incondicional hace que el programa vuelva constantemente a la etiquet
 
 ### Actividad 3
 
+Escribe un programa que compare el valor almacenado en la dirección de memoria 5 con el valor 10. Si el valor es menor que 10, guarda el valor 1 en la dirección 7. Si el valor es mayor o igual a 10, guarda el valor 0 en la dirección 7.
+
+
+
 ``` assembly
 @5
 D=M
@@ -113,6 +117,53 @@ M=1
 0;JMP
 
 ```
+### Actividad 04
+
+Crea un programa que use un ciclo para sumar los números del 1 al 5 y guarde el resultado en la dirección de memoria 12
+
+``` Assembly
+// Inicializo dandole valor a las variables "fijas"
+D=A
+// @i siendo el "contador" iniciando en 1
+@i 
+M=D
+
+// Apartado donde inicia el ciclo
+(CICLO)
+// Ingreso el valor del contador en el registro D para comparar si ya se completo todo el ciclo de la suma
+@i
+D=M
+@6
+D=A-D
+@SUMADO
+// Tiene que dar 0 para salir del ciclo
+D;JEQ
+
+// Se le agrega el valor del contator a la variable de la sumatoria
+@i
+D=M
+// Variable donde se va a guardar la sumatoria de los numeros
+@sum
+M=D+M
+// Incremento del contador
+@i
+M=M+1
+// Donde vuelve a empezar el ciclo
+@CICLO
+0;JMP
+
+// Al ya haber salido del ciclo/terminado de sumar los numeros, se guarda el resultado en la direccion de memoria 12
+(SUMADO)
+@sum
+D=M
+@12
+M=D
+@FINAL
+(FINAL)
+0;JMP
+```
+<img width="1111" height="801" alt="image" src="https://github.com/user-attachments/assets/3f3f6482-9a6c-44df-ac1b-fbf4299435a4" />
+
 
 
 ## Bitácora de aplicación 
@@ -120,6 +171,7 @@ M=1
 
 
 ## Bitácora de reflexión
+
 
 
 
