@@ -208,7 +208,7 @@ Un salto se puede utilizar usando las etiquetas, sirviendo como puntos de refere
 
 EJ:
 (saltar si un valor es menor que 10)
-```
+```asm
 @5
 D=M
 @10
@@ -235,7 +235,7 @@ M=1
 
 Se implemente utilizando una etiqueta que marca el inicio del ciclo y un salto incondicional (JMP) que hace que el programa vuelva a esa etiqueta. Tiene una condición de salida basada en una comparación/resta
 
-```asm
+``` asm
 (LOOP)
 @i
 D=M
@@ -259,6 +259,7 @@ D=M copia el valor que esta en la memoria RAM[A] al registro D, mientras que M=D
 
 Para leer el teclado, se debe acceder a la dirección de memoria @KBD y leer su valor con D=M, donde compara registros y si un valor es distinto de cero estaria indicando que una tecla está presionada
 Para pintar un pixel en la pantalla, se debe escribir un valor en la memoria que comienza en @SCREEN. Al escribir -1 se encienden los píxeles correspondientes y al escribir 0 se apagan
+
 
 
 
