@@ -176,15 +176,18 @@ M=D
 
 1. **_Describe con tus palabras las tres fases del ciclo Fetch-Decode-Execute. ¿Qué rol juega el Program Counter (PC) en este ciclo?_**
 
-El Fetch es cuando la CPU busca y obtiene la instrucción a relizar, Decode es cuando la decodifica la intrucción y Execute es cuandorealiza la instrucción recibida. El program Counter es, digamos, el orden en el que la CPU lee las instrucciones, que estan guardadas en la ROM 
+El Fetch es cuando la CPU busca y obtiene la instrucción a relizar 
+Decode es cuando la decodifica o interpreta la intrucción para saber que operación debe realizar
+Execute es cuando la CPU ejecuta la instrucción recibida
+El program Counter es, digamos, el orden en el que la CPU lee las instrucciones, que estan guardadas en la ROM, es el que lleva el control del orden de ejecución de las instrucciones
 
 2. **_¿Cuál es la diferencia fundamental entre una instrucción-A (que empieza con @) y una instrucción-C (que involucra D, M, A, etc.) en el lenguaje ensamblador de Hack? Da un ejemplo de cada una_**
 
-Las intrucciones tipo A se encargan principalmente en guardar / establecer valores o hacer referencia a una localizacion, mientras que las instrucciones de tipo C se encargan de hacer calculos con los valores guardados, asignaciones y saltos
+Las intrucciones tipo A se encargan principalmente en guardar / establecer valores o hacer referencia a una localizacion, mientras que las instrucciones de tipo C se encargan de hacer calculos con los valores guardados, asignaciones y saltos usando los registros A, D, M y la ALU
 
 Ejemplos:
 - tipo A:
-```
+```asm
 @10
 ```
 
@@ -195,14 +198,16 @@ M=D+A
 
 3. **_Explica la función de los siguientes componentes del computador Hack: el registro D, el registro A y la ALU_**
 
-- El registro A es un registro que guarda direcciones o valores
-- El registro D guarda datos temporales, resultados de operaciones, sirve para comparar valores, transportar información
-- La ALU es la unidad logica la cual se encarga de realizar operaciones en la computadora
+- El registro A es un registro que guarda direcciones de memoria o valores inmediatos y tambien determina que posicion de la RAM se accede mediante M
+- El registro D guarda datos temporales, resultados de operaciones, sirve para comparar valores o transportar información
+- La ALU (Arithmetic Logic Unit) es la unidad encargada de realizar operaciones aritmeticas y logicas en la computadora
 
 4. **_¿Cómo se implementa un salto condicional en Hack? Describe un ejemplo (p. ej., saltar si el valor de D es mayor que cero)_**
 
-Un salto se puede utilizar usando las etiquetas, sirviendo como puntos de referencia para que el CPU sepa hacia donde realizar el salto y los diferentes tipos de _Jumps_, en el que sus condiciones comparan el resultado con 0
+Un salto se puede utilizar usando las etiquetas, sirviendo como puntos de referencia para que el CPU sepa hacia donde realizar el salto y una instrucción de salto (JLT, JGT, JEQ, etc.), en el que sus condiciones se realiza evaluando el valor del registro D con respecto a cero
+
 EJ:
+(saltar si un valor es menor que 10)
 ```
 @5
 D=M
@@ -228,14 +233,32 @@ M=1
 
 5. **_¿Cómo se implementa un loop en el computador Hack? Describe un ejemplo (p. ej., un loop que decremente un valor hasta que llegue a cero)_**
 
+Se implemente utilizando una etiqueta que marca el inicio del ciclo y un salto incondicional (JMP) que hace que el programa vuelva a esa etiqueta. Tiene una condición de salida basada en una comparación/resta
 
+```asm
+(LOOP)
+@i
+D=M
+@END
+D;JEQ      // si i == 0, sale del loop
+
+@i
+M=M-1      // i = i - 1, en el caso que tenga otro valor
+@LOOP
+0;JMP
+
+(END)
+0;JMP
+```
 
 6. **_¿Cuál es la diferencia entre la instrucción D=M y la instrucción M=D?_**
 
-D=M esta guardando el valor que esta en la memoria #n mientras que M=D esta registrando un valor en la memoria #n
+D=M copia el valor que esta en la memoria RAM[A] al registro D, mientras que M=D esta registrando un valor en el registro D en la posicion de memoria RAM[A]
 
 7. **_Describe brevemente qué se necesita para leer un valor del teclado (KBD) y para “pintar” un pixel en la pantalla (SCREEN)_**
 
+Para leer el teclado, se debe acceder a la dirección de memoria @KBD y leer su valor con D=M, donde compara registros y si un valor es distinto de cero estaria indicando que una tecla está presionada
+Para pintar un pixel en la pantalla, se debe escribir un valor en la memoria que comienza en @SCREEN. Al escribir -1 se encienden los píxeles correspondientes y al escribir 0 se apagan
 
 
 
