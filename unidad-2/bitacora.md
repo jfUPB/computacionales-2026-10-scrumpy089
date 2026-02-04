@@ -8,9 +8,29 @@
 
 <img width="286" height="227" alt="image" src="https://github.com/user-attachments/assets/7f26536a-e31c-4aeb-80c7-de6b5c0dc9c0" />
 
+``` asm
+(START)
+@SCREEN
+M=1
+
+@FIN
+(FIN)
+0;JMP
+```
+
 ### Actividad 02
 
 <img width="273" height="218" alt="image" src="https://github.com/user-attachments/assets/adbfe880-701b-4382-81e5-1c267c63c692" />
+
+``` asm
+(START)
+@SCREEN
+M=-1
+
+@FIN
+(FIN)
+0;JMP
+```
 
 ### Actividad 03
 
@@ -93,3 +113,4 @@ M=D
 ## Bitácora de reflexión
 
 ### Actividad 09
+
