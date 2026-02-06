@@ -103,6 +103,61 @@ M=D
 
 ### Actividad 04
 ### Actividad 05
+
+<img width="987" height="208" alt="image" src="https://github.com/user-attachments/assets/5df22ab1-e764-4c93-893f-2993b27774bb" />
+
+### Traducción
+
+``` asm
+// int a = 10;
+@10 
+D=A
+@a
+M=D
+// int* p;
+//p = &a;
+@a
+D=A
+@p
+M=D
+// *p = 20;
+@20
+D=A
+// tener A el valor almacenado en p
+@p
+A=M
+M=D
+```
+<img width="976" height="164" alt="image" src="https://github.com/user-attachments/assets/5781ef68-2916-495e-965b-7e98ab0c349f" />
+
+### Traducción
+
+``` asm
+// int a = 10;
+@10
+D=A
+@a
+M=D
+// int b = 5;
+@5
+D=A
+@b
+M=D
+// int *p;
+//p = &a;
+@a
+D=A
+@p
+M=D
+//b = *p;
+@p // A=contenido de p, pero p contiene la dirección A
+A=M // A =16
+D=M // D = contenido de la direción 16 --> 10
+@b // A = la dirección de b --> 17
+M=D // Guardando en la 17, que es la b, el 10 que tengo en D
+```
+
+
 ### Actividad 06
 ### Actividad 07
 
@@ -113,4 +168,5 @@ M=D
 ## Bitácora de reflexión
 
 ### Actividad 09
+
 
