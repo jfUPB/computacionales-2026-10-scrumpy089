@@ -159,14 +159,101 @@ M=D // Guardando en la 17, que es la b, el 10 que tengo en D
 
 
 ### Actividad 06
+
+
 ### Actividad 07
+<img width="897" height="390" alt="image" src="https://github.com/user-attachments/assets/4617eef2-c3ed-4ecf-8151-4bf977ca42ee" />
+
+``` asm
+(start)
+
+//int result = 0;
+
+@result
+M=0
+// inicializa y habilita la RAM 16 para almacenar el valor 0, dandole el nombre de result 
+
+/*
+int main()
+{
+  result = sum(3, 4);
+  std::cout << "The sum: " << result << std::endl;
+}
+*/
+
+// Load sum arguments
+@3
+D=A
+@R0
+M=D
+// Ingresa el valor de 3 y la guarda en la dirección RAM 0
+
+@4
+D=A
+@R1
+M=D
+// Ingresa el valor de 4 y la guarda en la dirección RAM 1
+}
+// Save return address
+@returnFromSum
+D=A
+@R15
+M=D
+// returnFromSum es el puntero de una etiqueta, se guarda la dirección de dicha etiqueta en la RAM 15 (@R15), que se usará mas adelante
+
+// call sum
+@sum
+0;JMP
+// sum es el puntero de una etiqueta, con el que se saltará a la operación para sumar los valores que hay en @R0 y @R1
+
+// return after sum
+// and store result
+(returnFromSum)
+@R0
+D=M
+@result
+M=D
+// se copia el valor de la suma para despues, almacenarla en la "variable" correspondiente al resultado
+@fin
+(fin)
+0;JMP
+
+/*
+int sum(int a, int b)
+{
+    return a + b;
+}
+*/
+
+(sum)
+@R0
+D=M
+// Se copia el valor almacenado en RAM 0 en D
+@R1
+// Se instancia la direccion de @R1 para después hacer referencia el contenido de RAM 1
+D=D+M
+// se realiza la suma del valor de @R0 (que esta en D) y @R1 (que se llamó la dirección de la posición de RAM 1 para que estuviera en A, para que despues el programa a que direccion (Address) de memoria buscar). guardandola en D
+@R0
+M=D
+// Devuelve la suma a @R0
+@R15
+// Se llama la direccón de la etiqueta previamente almacenada para salir del proceso de la suma 
+A=M
+0;JMP
+```
 
 ## Bitácora de aplicación 
 
 ### Actividad 08
 
+<img width="1019" height="496" alt="image" src="https://github.com/user-attachments/assets/f7c596b1-d9c5-45a0-a417-19db2653ae84" />
+
+
+
+
 ## Bitácora de reflexión
 
 ### Actividad 09
+
 
 
