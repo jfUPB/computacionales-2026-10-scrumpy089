@@ -413,6 +413,10 @@ A=M
 0;JMP
 ```
 
+<img width="1112" height="772" alt="image" src="https://github.com/user-attachments/assets/ae8b6620-01cd-4efd-9fb5-36de9510afba" />
+
+En la captura se puede
+
 <img width="1021" height="499" alt="image" src="https://github.com/user-attachments/assets/e98a1768-c123-436c-8eb1-692047c6fea9" />
 
 ``` asm
@@ -532,6 +536,7 @@ A=M
 ## Bitácora de reflexión
 
 ### Actividad 09
+
 
 
 
