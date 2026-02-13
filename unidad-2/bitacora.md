@@ -415,7 +415,14 @@ A=M
 
 <img width="1117" height="807" alt="image" src="https://github.com/user-attachments/assets/02bf16d4-b5e2-4356-98ce-843d04dfd208" />
 
-En la captura se puede ver que:
+En la captura se puede ver que: 
+RAM[16] esta haciendo el papel de la variable "a", iniciando con un valor de 10 y la RAM[17] hace de la variable "b" con un valor de 20 inicialmente.
+RAM[0] y RAM[1] hacen de punteros de las variables anteriores respentivamente, de igual forma que RAM[15] hace de puntero para el punto de retorno cuando se haya realizado el intercambio de valores de las variables "a" (RAM[16]) Y "b" (RAM[17]).
+por ultimo podemos ver que se esta a punto de realizar un salto hacia la ROM[28], posición en la que se empezaria el proceso del cambio de valores.
+
+<img width="1115" height="799" alt="image" src="https://github.com/user-attachments/assets/4e9758e3-1ede-4820-a3c5-35230f11f74f" />
+
+sdgg
 
 <img width="1021" height="499" alt="image" src="https://github.com/user-attachments/assets/e98a1768-c123-436c-8eb1-692047c6fea9" />
 
@@ -536,6 +543,7 @@ A=M
 ## Bitácora de reflexión
 
 ### Actividad 09
+
 
 
 
