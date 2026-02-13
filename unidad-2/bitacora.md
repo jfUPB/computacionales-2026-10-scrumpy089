@@ -416,7 +416,121 @@ A=M
 <img width="1021" height="499" alt="image" src="https://github.com/user-attachments/assets/e98a1768-c123-436c-8eb1-692047c6fea9" />
 
 ``` asm
+    // ---------- main: inicializar arr[] ----------
+    @10
+    D=A
+    @16
+    M=D          // arr[0]=10
 
+    @15
+    D=A
+    @17
+    M=D          // arr[1]=15
+
+    @2
+    D=A
+    @18
+    M=D          // arr[2]=2
+
+    @3
+    D=A
+    @19
+    M=D          // arr[3]=3
+
+    @50
+    D=A
+    @20
+    M=D          // arr[4]=50
+
+    // ---------- llamar calSum(arr, 5) ----------
+    @16
+    D=A
+    @R0
+    M=D          // R0 = &arr[0] = 16
+
+    @5
+    D=A
+    @R1
+    M=D          // R1 = arrSize = 5
+
+    @RET_AFTER_CALSUM
+    D=A
+    @R15
+    M=D          // guardar return address
+
+    @CALSUM
+    0;JMP        // saltar a función
+
+(RET_AFTER_CALSUM)
+    // Aquí en C++ se haría cout (NO se implementa)
+
+    // return 0;
+    @0
+    D=A
+    @R2
+    M=D          // (opcional) solo para no sobrescribir R0 con 0
+                // Si quieres estrictamente return 0 en R0:
+                // @R0
+                // M=0
+
+(END)
+    @END
+    0;JMP
+
+
+// =====================================================
+// int calSum(int* parr, int arrSize)
+// Entrada: R0=parr, R1=arrSize
+// Salida:  R0=sum
+// Usa: R13=i, R14=sum
+// =====================================================
+(CALSUM)
+    // i = 0
+    @R13
+    M=0
+
+    // sum = 0
+    @R14
+    M=0
+
+(CALSUM_LOOP)
+    // if (i == arrSize) goto CALSUM_END
+    @R13
+    D=M
+    @R1
+    D=D-M
+    @CALSUM_END
+    D;JEQ
+
+    // D = *(parr + i)
+    @R0
+    D=M          // D = parr
+    @R13
+    A=D+M        // A = parr + i
+    D=M          // D = *(parr+i)
+
+    // sum = sum + D
+    @R14
+    M=M+D
+
+    // i++
+    @R13
+    M=M+1
+
+    @CALSUM_LOOP
+    0;JMP
+
+(CALSUM_END)
+    // return sum en R0
+    @R14
+    D=M
+    @R0
+    M=D
+
+    // volver a la dirección guardada en R15
+    @R15
+    A=M
+    0;JMP
 ```
 
 
