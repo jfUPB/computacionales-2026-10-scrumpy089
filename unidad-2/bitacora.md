@@ -160,6 +160,106 @@ M=D // Guardando en la 17, que es la b, el 10 que tengo en D
 
 ### Actividad 06
 
+``` asm
+@1
+D=A
+@16
+M=D
+
+@20
+D=A
+@17
+M=D
+
+@13
+D=A
+@18
+M=D
+
+@24
+D=A
+@19
+M=D
+
+@55
+D=A
+@20
+M=D
+
+@96
+D=A
+@21
+M=D
+
+@87
+D=A
+@22
+M=D
+
+@87
+D=A
+@22
+M=D
+
+@83
+D=A
+@23
+M=D
+
+@98
+D=A
+@24
+M=D
+
+@102
+D=A
+@25
+M=D
+
+// j = 0
+@R0
+M=0
+// sum = 0
+@R1
+M=0
+// ptr = 16
+@16
+D=A
+@R2
+M=D
+
+(LOOP)
+@R0
+D=M
+@10
+D=D-A
+@END
+D;JEQ
+
+// D= *ptr
+@R2
+A=M
+D=M
+
+// sum = sum+D
+@R1
+M=M+D
+
+// ptr++
+@R2
+M=M+D
+
+// j++
+@R0
+M=M+1
+
+@LOOP
+0;JMP
+
+(END)
+@END
+0;JMP
+```
 
 ### Actividad 07
 <img width="897" height="390" alt="image" src="https://github.com/user-attachments/assets/4617eef2-c3ed-4ecf-8151-4bf977ca42ee" />
@@ -248,12 +348,82 @@ A=M
 
 <img width="1019" height="496" alt="image" src="https://github.com/user-attachments/assets/f7c596b1-d9c5-45a0-a417-19db2653ae84" />
 
+``` asm
+@10
+D=A
+@16
+M=D    // RAM[16] = a = 10
 
+@20
+D=A
+@17
+M=D    // RAM[17] = b = 20
+
+@16
+D=A
+@R0
+M=D    R0 = &a (13)
+
+@17
+D=A
+@R1
+M=D    R1 = &b (14)
+
+@retornoDespuesCambio
+D=A
+@R1
+M=D
+
+@Cambio
+0;JMP
+
+(retornoDespuesCambio)
+@0
+D=A
+@R0
+M=D
+
+(END)
+@END
+0;JMP
+
+(Cambio)
+
+@R0
+A=M
+D=M
+@13
+M=D
+
+@R1
+A=M
+D=M
+@R0
+A=M
+M=D
+
+@13
+D=M
+@R1
+A=M
+M=D
+
+@r15
+A=M
+0;JMP
+```
+
+<img width="1021" height="499" alt="image" src="https://github.com/user-attachments/assets/e98a1768-c123-436c-8eb1-692047c6fea9" />
+
+``` asm
+
+```
 
 
 ## Bitácora de reflexión
 
 ### Actividad 09
+
 
 
 
