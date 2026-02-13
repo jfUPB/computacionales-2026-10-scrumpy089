@@ -422,7 +422,7 @@ por ultimo podemos ver que se esta a punto de realizar un salto hacia la ROM[28]
 
 <img width="1115" height="799" alt="image" src="https://github.com/user-attachments/assets/4e9758e3-1ede-4820-a3c5-35230f11f74f" />
 
-sdgg
+En la imagen se puede evidenciar que fue los valores que estaban guardados en RAM[16] y RAM[17] se intercambiaron efectivamente, y que se usó RAM [13] para guardar momentaneamente el antiguo valor de RAM[16] que era de 10
 
 <img width="1021" height="499" alt="image" src="https://github.com/user-attachments/assets/e98a1768-c123-436c-8eb1-692047c6fea9" />
 
@@ -539,10 +539,18 @@ A=M
 0;JMP
 ```
 
+<img width="1111" height="685" alt="image" src="https://github.com/user-attachments/assets/dbfddf31-808e-4937-99bc-79d16cfae184" />
+
+En la imagen se estan usando las RAM de la [16] a la [20] para guardar los valores del arreglo, RAM[14] es donde se va a guardar la suma del arreglo, la cual se espera que sea 80, RAM[15] es el puntero para cuando se termine el ciclo de la suma del arreglo, RAM[1] define el tamaño del arreglo y RaAM[0] guarda la direccion donde se empieza el arreglo
+
+<img width="1115" height="680" alt="image" src="https://github.com/user-attachments/assets/76ee7f73-e620-4763-9b4d-4192d3f40229" />
+
+Podemos evidenciar que el codigo fue un exito ya que en RAM[14] terminó con el valor de 80, el cual es el valor esperado de la suma del arreglo
 
 ## Bitácora de reflexión
 
 ### Actividad 09
+
 
 
 
