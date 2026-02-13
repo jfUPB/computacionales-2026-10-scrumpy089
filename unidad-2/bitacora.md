@@ -362,16 +362,16 @@ M=D    // RAM[17] = b = 20
 @16
 D=A
 @R0
-M=D    R0 = &a (13)
+M=D    //R0 = &a (16)
 
 @17
 D=A
 @R1
-M=D    R1 = &b (14)
+M=D    //R1 = &b (17)
 
 @retornoDespuesCambio
 D=A
-@R1
+@R15
 M=D
 
 @Cambio
@@ -383,8 +383,8 @@ D=A
 @R0
 M=D
 
-(END)
 @END
+(END)
 0;JMP
 
 (Cambio)
@@ -408,7 +408,7 @@ D=M
 A=M
 M=D
 
-@r15
+@R15
 A=M
 0;JMP
 ```
@@ -532,6 +532,7 @@ A=M
 ## Bitácora de reflexión
 
 ### Actividad 09
+
 
 
 
