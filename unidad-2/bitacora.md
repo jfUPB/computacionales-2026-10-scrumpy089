@@ -33,10 +33,15 @@ M=-1
 ```
 
 ### Actividad 03
-
+<details>
+	<summary>Imagenes</summary>
 <img width="499" height="831" alt="image" src="https://github.com/user-attachments/assets/f47350b0-70ce-4d2b-9077-58989bb72336" />
 <img width="309" height="668" alt="image" src="https://github.com/user-attachments/assets/139c3651-1adc-480c-909a-fbcda643f410" />
+</details>
 
+<details>
+	<summary>Codigo</summary>
+	
 ``` asm
 (START)
 //i = SCREEN
@@ -100,6 +105,8 @@ M=D
 
 ```
 
+</details>
+
 
 ### Actividad 04
 ### Actividad 05
@@ -159,6 +166,12 @@ M=D // Guardando en la 17, que es la b, el 10 que tengo en D
 
 
 ### Actividad 06
+
+<img width="1006" height="225" alt="image" src="https://github.com/user-attachments/assets/61cc776f-e115-45d3-ab41-f461b97d5e31" />
+
+
+<details>
+	<summary>Codigo de la suma del array</summary>
 
 ``` asm
 @1
@@ -260,10 +273,15 @@ M=M+1
 @END
 0;JMP
 ```
+	
+</details>
 
 ### Actividad 07
 <img width="897" height="390" alt="image" src="https://github.com/user-attachments/assets/4617eef2-c3ed-4ecf-8151-4bf977ca42ee" />
 
+<details>
+<summary>Codigo</summary>
+	
 ``` asm
 (start)
 
@@ -341,6 +359,7 @@ M=D
 A=M
 0;JMP
 ```
+</details>
 
 ## Bitácora de aplicación 
 
@@ -348,6 +367,9 @@ A=M
 
 <img width="1019" height="496" alt="image" src="https://github.com/user-attachments/assets/f7c596b1-d9c5-45a0-a417-19db2653ae84" />
 
+<details>
+	<summary>Desarrollo</summary>
+	
 ``` asm
 @10
 D=A
@@ -423,9 +445,13 @@ por ultimo podemos ver que se esta a punto de realizar un salto hacia la ROM[28]
 <img width="1115" height="799" alt="image" src="https://github.com/user-attachments/assets/4e9758e3-1ede-4820-a3c5-35230f11f74f" />
 
 En la imagen se puede evidenciar que fue los valores que estaban guardados en RAM[16] y RAM[17] se intercambiaron efectivamente, y que se usó RAM [13] para guardar momentaneamente el antiguo valor de RAM[16] que era de 10
+</details>
 
 <img width="1021" height="499" alt="image" src="https://github.com/user-attachments/assets/e98a1768-c123-436c-8eb1-692047c6fea9" />
 
+<details>
+	<summary>Desarrollo</summary>
+	
 ``` asm
 // ---------- main: inicializar arr[] ----------
 @10
@@ -546,13 +572,17 @@ En la imagen se estan usando las RAM de la [16] a la [20] para guardar los valor
 <img width="1115" height="680" alt="image" src="https://github.com/user-attachments/assets/76ee7f73-e620-4763-9b4d-4192d3f40229" />
 
 Podemos evidenciar que el codigo fue un exito ya que en RAM[14] terminó con el valor de 80, el cual es el valor esperado de la suma del arreglo
+</details>
 
 ## Bitácora de reflexión
 
 ### Actividad 09
 
+<details>
+	<summary>codigo del dibujo</summary>
+
 ``` asm
-(draw)
+	(draw)
 	// put bitmap location value in R12
 	// put code return address in R13
 	@SCREEN
@@ -778,40 +808,32 @@ Podemos evidenciar que el codigo fue un exito ya que en RAM[14] terminó con el 
 	@R13
 	A=M
 	D;JMP
-
 ```
+</details>
 
-``` asm
-// =====================================
-// Actividad 09 - MAIN
-// 'd' dibuja bitmap
-// 'e' borra bitmap
-// CALL manual:
-//   R13 = return address
-//   JMP draw / erase
-// draw/erase retornan con: @R13 A=M D;JMP
-// =====================================
+<details>
+	<summary>Codigo</summary>
 
-// ---- Inicializar R12 = 0 (para que draw use SCREEN correctamente) ----
-@R12
-M=0
+    // --- Inicializar offset del bitmap ---
+    @R12
+    M=0
 
-(LOOP)
+	(MAIN_LOOP)
     // Leer teclado
     @KBD
     D=M
 
-    // Si no hay tecla presionada, seguir
-    @LOOP
+    // Si no hay tecla presionada, seguir en loop
+    @MAIN_LOOP
     D;JEQ
 
-    // Comparar con 'd' (ASCII 100)
+    // ¿Es 'd'?  ASCII 100
     @100
     D=D-A
     @CALL_DRAW
     D;JEQ
 
-    // Volver a leer KBD para comparar con 'e'
+    // Volver a leer y comparar con 'e' ASCII 101
     @KBD
     D=M
     @101
@@ -819,18 +841,23 @@ M=0
     @CALL_ERASE
     D;JEQ
 
-    // Si es otra tecla, ignorar
-    @LOOP
+    // Otra tecla: ignorar
+    @MAIN_LOOP
     0;JMP
 
-(CALL_DRAW)
-    // Esperar a soltar tecla (evita repetir por mantener presionada)
-(WAIT_D_RELEASE)
+
+	// -------------------------
+	// CALL DRAW
+	// -------------------------
+	(CALL_DRAW)
+    // esperar a soltar tecla para evitar repetición
+	(WAIT_D_RELEASE)
     @KBD
     D=M
     @WAIT_D_RELEASE
     D;JNE
 
+    // call draw
     @RET_FROM_DRAW
     D=A
     @R13
@@ -838,18 +865,23 @@ M=0
     @draw
     0;JMP
 
-(RET_FROM_DRAW)
-    @LOOP
+	(RET_FROM_DRAW)
+    @MAIN_LOOP
     0;JMP
 
-(CALL_ERASE)
-    // Esperar a soltar tecla
-(WAIT_E_RELEASE)
+
+	// -------------------------
+	// CALL ERASE
+	// -------------------------
+	(CALL_ERASE)
+    // esperar a soltar tecla para evitar repetición
+	(WAIT_E_RELEASE)
     @KBD
     D=M
     @WAIT_E_RELEASE
     D;JNE
 
+    // call erase
     @RET_FROM_ERASE
     D=A
     @R13
@@ -857,183 +889,57 @@ M=0
     @erase
     0;JMP
 
-(RET_FROM_ERASE)
-    @LOOP
+	(RET_FROM_ERASE)
+    @MAIN_LOOP
     0;JMP
 
 
-// =====================================
-// erase: borra el mismo bitmap
-// Retorna usando R13 (igual que draw)
-// =====================================
-(erase)
+	// =====================================================
+	// erase: limpia toda la pantalla (8192 words)
+	// usa R13 como return address
+	// temporales: R11=puntero pantalla, R14=contador
+	// =====================================================
+	(erase)
     @SCREEN
     D=A
-    @R12
-    AD=D+M
+    @R11
+    M=D          // R11 = SCREEN
 
-    // row 6
-    @0
-    M=D-A      // M=0 (truco sin afectar A: D-A = SCREEN+... - 0 = addr ???)
-// ↑ mejor: hacerlo directo (más claro):
-//    M=0
-    // Para que no haya confusión, lo hago explícito desde aquí:
-
-    // row 6 (corrigiendo: ponemos en 0)
-    @0
+    @8192
     D=A
-    @0
-    D=A        // (no importa)
-    M=0
+    @R14
+    M=D          // R14 = 8192
 
-    // row 7
-    D=A
-    @32
-    AD=D+A
-    M=0
+	(ERASE_LOOP)
+    @R14
+    D=M
+    @ERASE_END
+    D;JEQ        // si contador == 0 -> terminar
 
-    // row 8
-    D=A
-    @32
-    AD=D+A
-    M=0
+    @R11
+    A=M
+    M=0          // *ptr = 0
 
-    // row 9
-    D=A
-    @32
-    AD=D+A
-    M=0
-    AD=A+1
-    M=0
+    @R11
+    M=M+1        // ptr++
 
-    // row 10
-    D=A
-    @31
-    AD=D+A
-    M=0
-    AD=A+1
-    M=0
+    @R14
+    M=M-1        // contador--
 
-    // row 11
-    D=A
-    @31
-    AD=D+A
-    M=0
-    AD=A+1
-    M=0
+    @ERASE_LOOP
+    0;JMP
 
-    // row 12
-    D=A
-    @31
-    AD=D+A
-    M=0
-    AD=A+1
-    M=0
-
-    // row 13
-    D=A
-    @31
-    AD=D+A
-    M=0
-    AD=A+1
-    M=0
-
-    // row 14
-    D=A
-    @31
-    AD=D+A
-    M=0
-    AD=A+1
-    M=0
-
-    // row 15
-    D=A
-    @31
-    AD=D+A
-    M=0
-    AD=A+1
-    M=0
-
-    // row 16
-    D=A
-    @31
-    AD=D+A
-    M=0
-    AD=A+1
-    M=0
-
-    // row 17
-    D=A
-    @31
-    AD=D+A
-    M=0
-    AD=A+1
-    M=0
-
-    // row 18
-    D=A
-    @31
-    AD=D+A
-    M=0
-    AD=A+1
-    M=0
-
-    // row 19
-    D=A
-    @31
-    AD=D+A
-    M=0
-    AD=A+1
-    M=0
-
-    // row 20
-    D=A
-    @31
-    AD=D+A
-    M=0
-    AD=A+1
-    M=0
-
-    // row 21
-    D=A
-    @31
-    AD=D+A
-    M=0
-    AD=A+1
-    M=0
-
-    // row 22
-    D=A
-    @31
-    AD=D+A
-    M=0
-    AD=A+1
-    M=0
-
-    // row 23
-    D=A
-    @31
-    AD=D+A
-    M=0
-    AD=A+1
-    M=0
-
-    // row 24
-    D=A
-    @31
-    AD=D+A
-    M=0
-
-    // return
+	(ERASE_END)
     @R13
     A=M
     0;JMP
 
 
-// =====================================
-// TU FUNCIÓN draw (la pegas igual)
-// =====================================
-(draw)
+	// =====================================================
+	// draw: (TU CÓDIGO DEL BITMAP EDITOR)
+	// Mantengo tu retorno con R13 tal cual.
+	// =====================================================
+	(draw)
     // put bitmap location value in R12
     // put code return address in R13
     @SCREEN
@@ -1259,8 +1165,8 @@ M=0
     @R13
     A=M
     D;JMP
-```
 
+</details>
 
 
 
