@@ -336,21 +336,101 @@ int main() {
 - suelta error porque se intenta usar un puntero que no tiene contenido ya que inmediatamente antes fue eliminado
 
 ¿Qué diferencias notas entre el comportamiento y la gestión del Heap en comparación con el Stack?
-	- Stack: las variables se crean y se borran solas al entrar/salir de funciones (automático, rápido).
-	- Heap: tú pides memoria con new y tú mismo debes devolverla con delete (manual). Si la liberas y la vuelves a usar, pasan errores como este.
+
+- Stack: las variables se crean y se borran solas al entrar/salir de funciones (automático, rápido).
+- Heap: tú pides memoria con new y tú mismo debes devolverla con delete (manual). Si la liberas y la vuelves a usar, pasan errores como este.
 
 ¿Qué consecuencias tendría no liberar la memoria reservada con new?
-	- Se produce una fuga de memoria, provocando que el software consuma cada vez más recursos con el tiempo. Esto suele derivar en un rendimiento lento, inestabilidad o el bloqueo del sistema  
+
+- Se produce una fuga de memoria, provocando que el software consuma cada vez más recursos con el tiempo. Esto suele derivar en un rendimiento lento, inestabilidad o el bloqueo del 		sistema  
 
 ¿Por qué es importante usar delete[] al liberar memoria asignada para un arreglo?
-	- Porque `new int[tam]` reserva un arreglo (varios elementos), delete[] le dice al sistema: “voy a liberar todo el arreglo correctamente”.
-	Si usas delete en vez de `delete[]`, estás liberando “como si fuera un solo elemento” y no todo el conjunto
+- Porque `new int[tam]` reserva un arreglo (varios elementos), delete[] le dice al sistema: “voy a liberar todo el arreglo correctamente”.
+Si usas delete en vez de `delete[]`, estás liberando “como si fuera un solo elemento” y no todo el conjunto
 	
 </details>
 
 ### Actividad 05
 
+Explica qué ocurre al copiar un objeto en C++ y en C#. ¿Qué diferencias encuentras?
 
+- en C++ se crea una nueva direccion con el mismo contenido del de la original dentro del stack permitiendo su uso independiente teniendo como base el contenido de la original. En cambio, en C#, se crea un puntero con la direccion del objeto creado en el stack y este ultimo, el objeto, se guarda en el heap, y, al crear la copia de esa forma, lo que hace es guardar la informacion que contiene original (el puntero), o sea la direccion del objeto y no el contenido de dicha direccion, finiquitando asi con 2 punteros hacia el mismo objeto
+
+¿Qué es copia en C++ y en C#? ¿Es una copia independiente de original?
+
+- en C++ es lo que su nombre lo indica, y en C# es un nuevo puntero
+- en C++ si, en C# no
+
+### Actividad integradora de investigación
+
+<details>
+<summary><b>Codigo</b></summary>
+	
+``` c++
+#include <iostream>
+
+int contador_global = 100;
+
+void ejecutarContador() {
+    static int contador_estatico = 0;
+    contador_estatico++;
+    std::cout << "  -> Llamada a ejecutarContador. Valor de contador_estatico: " << contador_estatico << std::endl;
+}
+
+void sumaPorValor(int a) {
+    a = a + 10;
+    std::cout << "  -> Dentro de sumaPorValor, 'a' ahora es: " << a << std::endl;
+}
+
+void sumaPorReferencia(int& a) {
+    a = a + 10;
+    std::cout << "  -> Dentro de sumaPorReferencia, 'a' ahora es: " << a << std::endl;
+}
+
+void sumaPorPuntero(int* a) {
+    *a = *a + 10;
+    std::cout << "  -> Dentro de sumaPorPuntero, '*a' ahora es: " << *a << std::endl;
+}
+
+int main() {
+    int val_A = 20;
+    int val_B = 20;
+    int val_C = 20;
+
+    std::cout << "--- Experimento con paso de parámetros ---" << std::endl;
+    std::cout << "Valor inicial de val_A: " << val_A << std::endl;
+    sumaPorValor(val_A);
+    std::cout << "Valor final de val_A: " << val_A << std::endl << std::endl;
+
+    std::cout << "Valor inicial de val_B: " << val_B << std::endl;
+    sumaPorReferencia(val_B);
+    std::cout << "Valor final de val_B: " << val_B << std::endl << std::endl;
+
+    std::cout << "Valor inicial de val_C: " << val_C << std::endl;
+    sumaPorPuntero(&val_C);
+    std::cout << "Valor final de val_C: " << val_C << std::endl << std::endl;
+
+    std::cout << "--- Experimento con variables estáticas ---" << std::endl;
+    ejecutarContador();
+    ejecutarContador();
+    ejecutarContador();
+
+    return 0;
+}
+```
+</details>
+
+#### A) Predicción (sin ejecutar el código)
+
+1. 
+2. 
+3. 
+
+#### B) Verificación y análisis (usando el depurador)
+
+4. 
+5. 
+6. 
 
 ### Actividad 06
 
@@ -379,5 +459,6 @@ int main() {
 ## Bitácora de reflexión
 
 ### Actividad 11
+
 
 
