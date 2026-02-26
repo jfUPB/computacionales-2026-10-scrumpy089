@@ -422,15 +422,52 @@ int main() {
 
 #### A) Predicción (sin ejecutar el código)
 
-1. 
-2. 
-3. 
+1. ¿Cuál será la salida final en la consola de este programa?
+
+	- para val_A termina con valor de 20 porque se cambia es una copia y las otras 2 terminan con 30 porque se hacen por referencia y por puntero lo que cambian la original. Y se imprime `contador_estatico` con 1, 2 y 3
+
+2. Escribe la salida completa que esperas.
+	
+	- 
+	
+3. Dibuja un mapa de memoria conceptual de este programa
+
+	- SEGMENTO DE CÓDIGO
+
+   		- main()
+       	- ejecutarContador()
+       	- sumaPorValor(int)
+       	- sumarPorReferencia(int&)
+       	- sumarPorPuntero(int*)
+  
+    - DATOS GLOBALES / ESTATICOS
+  
+    	- contador_global (global)
+   		- contador_estatico (static dentro de una funcion)
+  
+	- HEAP
+ 
+		- no hay (no se usa `new`)
+
+	- STACK 
+  
+		- val_A
+  		- val_B
+    	- val_C 
+
 
 #### B) Verificación y análisis (usando el depurador)
 
 4. 
+
+
 5. 
-6. 
+
+
+6. Explica con tus propias palabras el comportamiento de contador_estatico. ¿Por qué “recuerda” su valor entre llamadas a la función ejecutarContador? ¿En qué se diferencia de una variable local normal?
+
+	- `contador_estatico` recuerda porque se le declara como estatico, se crean solo una vez y estos quedan guardados en la seccion de globales y estaticos, lo que perduran al cambiar de funciones (a diferencia de las variables locales normales que se crean al entrar y se borran al salir de las funciones), lo que permiten acumular cambios y duran hasta que termina el programa
+
 
 ### Actividad 06
 
@@ -459,6 +496,7 @@ int main() {
 ## Bitácora de reflexión
 
 ### Actividad 11
+
 
 
 
