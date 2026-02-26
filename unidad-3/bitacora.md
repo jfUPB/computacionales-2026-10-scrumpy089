@@ -424,7 +424,7 @@ int main() {
 
 1. ¿Cuál será la salida final en la consola de este programa?
 
-	- para val_A termina con valor de 20 porque se cambia es una copia y las otras 2 terminan con 30 porque se hacen por referencia y por puntero lo que cambian la original. Y se imprime `contador_estatico` con 1, 2 y 3
+	- para `val_A` termina con valor de 20 porque se cambia es una copia y las otras 2 (`val_B` Y `val_C`) terminan con 30 porque se hacen por referencia y por puntero lo que cambian la original. Y se imprime `contador_estatico` con 1, 2 y 3
 
 2. Escribe la salida completa que esperas.
 	
@@ -496,6 +496,7 @@ int main() {
 ## Bitácora de reflexión
 
 ### Actividad 11
+
 
 
 
