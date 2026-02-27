@@ -824,17 +824,231 @@ cuando se usa
 
 ### Actividad 10
 
+<details>
+<summary><b>Codigo</b></summary>
 
+``` c++
+#include <iostream>
+using namespace std;
+
+class Punto {
+public:
+    int x;
+    int y;
+
+    // Constructor
+    Punto(int _x, int _y) : x(_x), y(_y) {
+        cout << "Constructor: Punto(" << x << ", " << y << ") creado." << endl;
+    }
+
+    // Destructor
+    ~Punto() {
+        cout << "Destructor: Punto(" << x << ", " << y << ") destruido." << endl;
+    }
+
+    // Método para imprimir valores
+    void imprimir() {
+        cout << "Punto(" << x << ", " << y << ")" << endl;
+    }
+};
+
+int main() {
+    {
+        cout << "Inicio del bloque" << endl;
+        Punto pBloque(100, 200);
+        // Coloca un breakpoint aquí para ver 'pBloque' en el stack.
+        pBloque.imprimir();
+    }
+    // Al salir del bloque, el destructor de 'pBloque' se invoca.
+    cout << "Fuera del bloque" << endl;
+
+    // Creación dinámica:
+    Punto* pDinamico = new Punto(300, 400);
+    pDinamico->imprimir();
+    // 'pDinamico' sigue existiendo hasta que se libere manualmente.
+    // Coloca un breakpoint aquí y observa la dirección de memoria.
+    delete pDinamico;
+    // Después de 'delete', el destructor se llama y la memoria se libera.
+
+    return 0;
+}
+```
+</details>
+
+1. Explica el ciclo de vida de un objeto en el stack versus uno en el heap.
+
+los objetos en stack se crean automaticamente cuando el programa entra al bloque, en el momento en que se ejecuta `Punto pBloque(100, 200)` se llama el constructor y cuando sale del bloque se llama al destructor automaticamente, es decir, en stack, el objeto vive solo mientras este dentro del bloque o funcion
+los objetos en el heap se crean con `new`, manualmente, cuando se ejecuta `new Punto(300, 400);`, se llama al constructor y el objeto queda guardado en heap, aunque se salga del bloque o funcion, no se destruye automaticamente, hay que usar `delete` para llamar al destructor y asi poder liberar memoria
+
+2. ¿Compila? ¿Por qué ocurre esto?
+
+no, no compila. Porque `pBloque2` fue declarada dentro del bloque y se esta usando fuera del bloque. Una variable declarada dentro de un bloque solo existe dentro de esas llaves, cuando se sale del bloque la variable ya no es visible y el compilador no sabe a que se refiere. Se pierde la variable puntero
+
+3. Modifica el programa para declarar pBloque2 por fuera del bloque, pero inicializarlo dentro del bloque. ¿Qué ocurre? ¿Por qué?
+
+<details>
+	<summary><b>Codigo Modificado</b></summary>
+
+``` c++
+#include <iostream>
+using namespace std;
+
+class Punto {
+public:
+    int x;
+    int y;
+
+    // Constructor
+    Punto(int _x, int _y) : x(_x), y(_y) {
+        cout << "Constructor: Punto(" << x << ", " << y << ") creado." << endl;
+    }
+
+    // Destructor
+    ~Punto() {
+        cout << "Destructor: Punto(" << x << ", " << y << ") destruido." << endl;
+    }
+
+    // Método para imprimir valores
+    void imprimir() {
+        cout << "Punto(" << x << ", " << y << ")" << endl;
+    }
+};
+
+int main() {
+    {
+        cout << "Inicio del bloque" << endl;
+        Punto pBloque(100, 200);
+        pBloque.imprimir();
+        // Coloca un breakpoint aquí para ver 'pBloque' en el stack.
+    }
+    // Al salir del bloque, el destructor de 'pBloque' se invoca.
+    cout << "Fuera del bloque" << endl;
+    // Creación dinámica:
+    Punto* pDinamico = new Punto(300, 400);
+    pDinamico->imprimir();
+    // 'pDinamico' sigue existiendo hasta que se libere manualmente.
+    // Coloca un breakpoint aquí y observa la dirección de memoria.
+    delete pDinamico;
+    // Después de 'delete', el destructor se llama y la memoria se libera.
+
+    Punto* pBloque2 = nullptr;   // declarada fuera
+
+    {
+        cout << "Inicio del bloque 2" << endl;
+        pBloque2 = new Punto(500, 600);  // inicializada dentro
+        pBloque2->imprimir();
+    }
+
+    // aquí sí existe la variable pBloque2 (el puntero)
+    pBloque2->imprimir();
+    delete pBloque2;
+    pBloque2 = nullptr;
+
+    return 0;
+```
+</details>
+
+ahora si el compila y corre el programa, porque ahora `pBloque2` fue declarada en el alcance de `main`, entonces sigue existinedo despues del bloque y como el objeto fue creado con `new`, ese objeto vive en el heap y no se destruye al salir del bloque, solo si se hace `detele` a `pBloque2`
+<br>
+
+<details>
+	<summary>en este caso</summary>
+
+``` c++
+#include <iostream>
+using namespace std;
+
+class Punto {
+public:
+    int x;
+    int y;
+
+    // Constructor
+    Punto(int _x, int _y) : x(_x), y(_y) {
+        cout << "Constructor: Punto(" << x << ", " << y << ") creado." << endl;
+    }
+
+    // Destructor
+    ~Punto() {
+        cout << "Destructor: Punto(" << x << ", " << y << ") destruido." << endl;
+    }
+
+    // Método para imprimir valores
+    void imprimir() {
+        cout << "Punto(" << x << ", " << y << ")" << endl;
+    }
+};
+
+int main() {
+    {
+        cout << "Inicio del bloque" << endl;
+        Punto pBloque(100, 200);
+        // Coloca un breakpoint aquí para ver 'pBloque' en el stack.
+        pBloque.imprimir();
+    }
+
+    Punto* pBloque2 = nullptr;
+    {
+        cout << "Inicio del bloque 2" << endl;
+        pBloque2 = new Punto(500, 600);
+        pBloque2->imprimir();
+    }
+    pBloque2->imprimir();
+    delete pBloque2;
+
+    return 0;
+}
+```
+</details>
+
+4. ¿Por qué el objeto pBloque se destruye al salir del bloque y pBloque2 no?
+Recuerda de nuevo, pBloque2 es un objeto o es una referencia a un objeto?
+
+`pBloque` fue creado como un objeto normal en el stack, entonces cuando el programa sale del bloque, ese objeto deja de existir automaticamente y por eso se llama al destructor. En cambio `pBloque2` fue creado usando `new` el cual crea el objeto en el heap por lo que no se destruye al salir del bloque y no se pierde por haberse declarado el puntero fuera de este
+
+5. ¿En qué parte de la memoria se almacena pBloque2?
+
+en el stack del `main`
+
+6. ¿En qué parte de la memoria se almacena el objeto al que apunta pBloque2?
+
+en el heap
 
 ## Bitácora de aplicación 
 
 ### Actividad Integradora
+
+1. Diagnóstico del problema
+
+- Error 1: hay una fuga de memoria, se reserva memoria pero nunca se libera, la clase del constructor hace: `estadisticas = new int[3];` pero nunca se libera cuando el heroe muere. Esto ocurre porque el heroe es un objeto local que vive en el stack, `estadisticas` apunta a un arreglo que vive en el heap y al salir de `simularEncuentro`, el heroe desaparece del stack pero el arreglo del heap sigue vigente porque nadie lo liberó. La consecuencia es que el programa va consumiendo cada vez mas RAM. Lo que pasaria en un juego es que despues de muchos encuentros, se pone lento o hasta crashear por falta de memoria
+
+- Error 2: se realiza una copia de forma incorrecta, la linea: `Personaje copiaHeroe = heroe;` hace una copia la informacion que contiene asi que tambien copia el puntero de la dirección de `estadisticas` tal cual en vez de copiar el valor de cada estadistica. Ocurre porque en el stack quedan dos objetos distinto: `heroe` y `copiaHeroe` pero en el heap no se crean nuevas estadisticas sino que ambos apuntan al mismo bloque. La consecuencia es que si cambias las estadisticas en uno, cambian en el otro y si intentas arreglar la fuga agregando un destructor con `delete[]` entonces ambos objetos intentarian liberar el mismo arreglo
+
+
+2. USA EL DEPURADOR
+
+Error 1
+<img width="684" height="619" alt="image" src="https://github.com/user-attachments/assets/ea6ea92e-6eb8-4930-ba55-07af3a57af4f" />
+demuestra que se reservó memoria dinamica
+
+Error 2
+<img width="620" height="333" alt="image" src="https://github.com/user-attachments/assets/a19f1267-f5c9-4377-88ee-a5230a9bd359" />
+Tienen la misma direccion para estadisticas
+
+3. Induce los fallos
+
+- Error 1: haciendo esta modificación
+
+  ``` c++
+	for (int i = 0; i < 200000; i++) simularEncuentro();
+  ``` 
 
 
 
 ## Bitácora de reflexión
 
 ### Actividad 11
+
 
 
 
