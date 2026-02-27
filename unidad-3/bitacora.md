@@ -471,21 +471,360 @@ int main() {
 
 ### Actividad 06
 
+<details>
+	<summary><b>Codigo en C++</b></summary>
 
+``` c++
+#include <iostream>
+using namespace std;
 
+class Punto {
+public:
+    int x;
+    int y;
+
+    // Constructor
+    Punto(int _x, int _y) : x(_x), y(_y) {
+        cout << "Constructor: Punto(" << x << ", " << y << ") creado." << endl;
+    }
+
+    // Destructor
+    ~Punto() {
+        cout << "Destructor: Punto(" << x << ", " << y << ") destruido." << endl;
+    }
+
+    // Método para imprimir valores
+    void imprimir() {
+        cout << "Punto(" << x << ", " << y << ")" << endl;
+    }
+};
+
+int main() {
+    // Coloca un breakpoint en la siguiente línea
+    Punto p(10, 20);
+
+    // Muestra el contenido del objeto
+    p.imprimir();
+
+    // Utiliza el depurador para inspeccionar 'p', observa la dirección de memoria y el valor de x e y.
+    return 0;
+}
+```
+</details>
+<br>
+
+<details>
+	<summary><b>Codigo en C#</b></summary>
+
+``` c#
+using System;
+
+public class Punto
+{
+    public int x;
+    public int y;
+
+    public Punto(int _x, int _y)
+    {
+        x = _x;
+        y = _y;
+        Console.WriteLine($"Constructor: Punto({x}, {y}) creado.");
+    }
+
+    ~Punto()
+    {
+        Console.WriteLine($"Destructor: Punto({x}, {y}) destruido.");
+    }
+
+    public void Imprimir()
+    {
+        Console.WriteLine($"Punto({x}, {y})");
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Punto p = new Punto(10, 20);
+        p.Imprimir();
+    }
+}
+```
+</details>
+<br>
+
+**Abre la calculadora de Windows y selecciona el modo de programador. Cambia a modo hexadecimal. Escribe 0a ¿Qué valor en decimal obtienes? Escribe 14 ¿Qué valor en decimal obtienes? ¿Qué observas?**
+
+0a = 10, 14 = 20, se obsera que los valores de x y y están almacenados directamente en memoria como enteros.
+
+**Si la arquitectura de tu computador fuera big-endian, ¿Cómo quedarían almacenados los bytes en la memoria de p?**
+
+quedaria asi: 00 00 00 0a 00 00 00 14
+
+#### Reflexiona sobre las siguientes cuestiones:
+
+1. ¿Cuál es la diferencia entre un constructor y un destructor en C++?
+   
+- Constructor: se ejecuta cuando el objeto se crea. Inicializa los datos.
+- Destructor: se ejecuta cuando el objeto se destruye (en este caso, cuando termina main). Libera recursos si es necesario.
+
+2. ¿Cuál es la diferencia entre un objeto y una clase en C++?
+
+Clase es el molde o plantilla (define qué tendrá el objeto), y objeto es la instancia real creada a partir de la clase.
+
+3. ¿Qué diferencia notas entre el objeto Punto en C++ y C#?
+
+en C++ esta almacenada en el stack y es el objeto mismo, en C#, p no es el objeto sino una referencia, el objeto real esta en el heap
+
+4. ¿Qué es p en C++ y qué es p en C#?
+
+en C++, `p` es un objeto y en C#, `p` es una referencia a un objeto
+
+5. ¿En qué parte de memoria se almacena p en C++ y en C#?
+
+en C++, `p` esta en el stack y en C#, `p` esta en el heap
+
+6. ¿Qué observaste con el depurador acerca de p? Según lo que observaste ¿Qué es un objeto en C++?
+
+El depurador muestra que:
+- p ocupa espacio real en memoria.
+- Sus datos están almacenados directamente de forma contigua.
+- No es un puntero ni una referencia.
+- Es simplemente una estructura de datos con sus miembros almacenados uno después del otro.
+   
 ### Actividad 07
 
+<details>
+	<summary><b>Codigo</b></summary>
+
+``` c++
+#include <iostream>
+using namespace std;
+
+class Punto {
+public:
+    int x;
+    int y;
+
+    // Constructor
+    Punto(int _x, int _y) : x(_x), y(_y) {
+        cout << "Constructor: Punto(" << x << ", " << y << ") creado." << endl;
+    }
+
+    // Destructor
+    ~Punto() {
+        cout << "Destructor: Punto(" << x << ", " << y << ") destruido." << endl;
+    }
+
+    // Método para imprimir valores
+    void imprimir() {
+        cout << "Punto(" << x << ", " << y << ")" << endl;
+    }
+};
+
+int main() {
+    // Objeto en el stack
+    Punto pStack(30, 40);
+    pStack.imprimir();
+
+    // Objeto en el heap
+    Punto* pHeap = new Punto(50, 60);
+    pHeap->imprimir();
+
+    // Coloca breakpoints en la creación de pStack y pHeap
+    // Inspecciona las direcciones de memoria de ambos objetos:
+    // - pStack: dirección obtenida directamente.
+    // - pHeap: la variable pHeap es un puntero que contiene la dirección del objeto en el heap.
+
+    // Recuerda liberar la memoria del heap
+    delete pHeap;
+
+    return 0;
+}
+```
+</details>
+
+1. Explicación de la diferencia entre objetos creados en el stack y en el heap.
+
+| Stack | Heap|
+|-------|-----|
+| `Punto pStack (30, 40);` | `Punto* pHeap = new Punto(50, 60);` |
+| se crea autamaticamente | se crea manualmente usando `new` |
+| vive solo dentro de `main` | vive hasta que se borre con `delete` |
+|cuando `main` termina se llama el destructor | si no se hace `detele`, solo queda ocupando memoria |
+| su direccion se obtiene con `&pStack` | `pHeap` guarda la direccion del objeto real que esta en el heap |
+
+2. `pStack` ¿Es un objeto o una referencia a un objeto?
+
+`pStack` es un objeto que esta guardado directamente en el stack
+
+3. `pHeap` ¿Es un objeto o una referencia a un objeto? Si es una referencia, ¿A qué objeto hace referencia?
+
+`pHeap` es una referencia / puntero a un objeto, hace referencia referencia al objeto Punto(50,60) que está en el heap
+
+4. ¿Qué observas en el depurador?
+
+en locals, `pHeap` se muestra algo como 0x00000162f6545160{x=50 y=60}
+En Memory1, al mirar &pHeap, lo que aparece guardado ahí es 60 51 54 f6 62 01 00 00, lo que seria la dirección del objeto
+en little endidan seria 00 00 01 62 f6 54 51 60, lo que en hexadecimal seria 00 00 01 62 f6 54 51 60, Exactamente el valor que tenía pHeap en locals
 
 
 ### Actividad 08
 
+<details>
+<summary><b>Codigo</b></summary>
+
+``` c++
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Punto {
+public:
+  string name;
+    int x;
+    int y;
+
+    // Constructor
+    Punto(string _name, int _x, int _y) : name(_name),x(_x), y(_y) {
+        cout << "Constructor: Punto "<< name <<" (" << x << ", " << y << ") creado." << endl;
+    }
+
+    // Destructor
+    ~Punto() {
+        cout << "Destructor: Punto " << name << "(" << x << ", " << y << ") destruido." << endl;
+    }
+
+    // Método para imprimir valores
+    void imprimir() {
+        cout << "Punto "<< name << "(" << x << ", " << y << ")" << endl;
+    }
+};
+
+void cambiarNombre(Punto p, string nuevoNombre) {
+  p.name = nuevoNombre;
+}
+
+int main() {
+    // Objeto original
+    Punto original("original",70, 80);
+    original.imprimir();
+    cambiarNombre(original, "cambiado");
+    original.imprimir();
+    return 0;
+}
+```
+</details>
+
+1. ¿Qué ocurre después de llamar a la función cambiarNombre? ¿Por qué aparece el mensaje Destructor: Punto cambiado(70, 80) destruido.? ¿Por qué original sigue existiendo luego de llamar cambiarNombre?
+
+cuando se llama la funcion `cambiarNombre(original, "cambiado")` no se esta cambiando el objeto original, lo que pasa es que la funcion recibe el parametro asi: `void cambiarNombre(Punto p, string nuevoNombre)`, esto significa que `p` es una copia del objeto original, entonces dentro de la funcion cambias el nombre de la copia y no del original
+aparece el mensaje del destructor porque la copia `p` existe solo mientras la funcion esta ejecutandose, asi que cuando la funcion termina, `p` se destruye automaticamente y como en ese momento `p.name`  ya era "cambiado" el destructor imprime Destructor: Punto cambiado(70, 80) destruido.
+
+2. ¿En qué parte del mapa de memoria está original y en cuál está p? ¿Son el mismo objeto?
+
+`original` es una variable local de `main` o sea que esta en el stack, `p` es un parametro local de `cambiarNombre` o sea que tambien esta en el stack pero de dicha funcion.
+no son el mismo objeto, son dos distintos con el mismo contenido
+
+<details>
+<summary><b>Modifica la funcion cambiarNombre</b></summary>
+
+``` c++ 
+void cambiarNombre(Punto& p, string nuevoNombre) {
+  p.name = nuevoNombre;
+}
+```
+</details>
+
+¿Qué ocurre ahora? ¿Por qué?
+
+Ahora sí cambia el nombre del objeto `original`, ocurre porque ahora el parametro es `Punto& p` eso significa paso por referencia, no se crea una copia
+<br>
+
+**Modifica ahora a cambiarNombre y a main de la siguiente manera:**
+
+<details>
+	<summary><b>Codigo</b></summary>
+
+``` c++
+void cambiarNombre(Punto* p, string nuevoNombre) {
+  p->name = nuevoNombre;
+}
+
+int main() {
+    // Objeto original
+    Punto original("original",70, 80);
+    original.imprimir();
+
+    cambiarNombre(&original, "cambiado");
+    original.imprimir();
+
+    return 0;
+}
+```
+</details>
+
+**¿Qué ocurre ahora? ¿Por qué?**
+
+Ahora sí cambia el nombre de original, antes de llamar la función: imprime `original`, después de `cambiarNombre(&original, "cambiado")`: imprime `cambiado`, y ya no aparece el destructor “extra” en medio, porque no se creó una copia
+Esto para porque estás pasando la dirección de `original` con `&original`. Entonces p apunta al objeto real, y con `p->name = nuevoNombre;` esta modificando directamente el mismo objeto en memoria
+
+**En este caso ¿Cuál es la diferencia entre pasar un objeto por valor, por referencia y por puntero?**
+
+- Por valor se crea una copia del objeto, los cambios solo afectan a la copia y al salir de la funcion, esa copia se destruye
+- Por referencia se esta manejando el mismo objeto pero con otro nombre local, los cambios se quedan en el original
+- Por puntero, se pasa una direccion y el parametro es el puntero, los cambios se quedan en el original
 
 
 ### Actividad 09
 
+1. ¿Qué puedes concluir de los miembros estáticos y de instancia de una clase en C++? ¿Cómo se gestionan en memoria? ¿Qué ventajas y desventajas tienen? ¿Cuándo es útil utilizarlos?
 
+**Miembros de instancia ej: valor**
+
+- cada objeto tiene su propia copia, si cambias `c1.valor`, no afecta `c2.valor`
+- en memoria van dentro del objeto, o sea, estan donde este alamacenado ese objeto, stack si el objeto es local, heap si fue creado con `new`
+
+ventajas
+
+- datos independientes por objeto
+- mas facil de razonar, cada objeto controla su estado
+
+desventajas
+- si tienes muchos objetos, cada uno ocupa su propio espacio
+
+cuando se usa
+- casi siempre, para representar el estado propio de cada instancia
+
+***Mienbros estaticos ej: total**
+
+- existen una sola vez para toda la clase, no por objeto
+- todos los objetos comparten ese mismo total
+- en memoria se guarda en la zona de datos globales/estaticos, separado de cada objeto
+
+ventajas
+
+- util para informacion compartida, contadores, configuracion global
+
+desventajas
+
+- es como un global de la clase, si muchos lugares lo modifican, puede volverse confuso
+- puede generar dependencias y efectos secundarios
+
+cuando se usa
+
+- cuando necesitas un dato comun a todas las instancias: contador de instancias, caches compartidas, configuracion, etc
+
+¿En qué segmento de memoria están c1, c2, c3 y Contador::total?
+
+`c1` y `c2` estan en el stack, porque son variables locales creadas dentro de main
+`contador::total` estan en datos globales / estaticos
+`c3` (puntero) esta en el stack porque es una variable local de `main` pero el objeto creado con `new` esta en el heap
 
 ### Actividad 10
+
+
 
 ## Bitácora de aplicación 
 
@@ -496,6 +835,7 @@ int main() {
 ## Bitácora de reflexión
 
 ### Actividad 11
+
 
 
 
