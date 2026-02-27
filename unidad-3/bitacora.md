@@ -1042,12 +1042,152 @@ Tienen la misma direccion para estadisticas
   ``` c++
 	for (int i = 0; i < 200000; i++) simularEncuentro();
   ``` 
+Al inicio
+<img width="764" height="332" alt="image" src="https://github.com/user-attachments/assets/3fc9bb6d-4784-4f07-96d1-3231b9778c8b" />
+
+Al finalizar
+<img width="765" height="331" alt="image" src="https://github.com/user-attachments/assets/dab57f29-7267-48c1-9dd6-e37c50fba18c" />
+
+- Error 2: agregando esto despues de crear la copia
+
+``` c++
+copiaHeroe.estadisticas[0] = 561532; // vida
+heroe.imprimir();
+copiaHeroe.imprimir();
+```
+
+<img width="486" height="265" alt="image" src="https://github.com/user-attachments/assets/d4a1c6fb-7e25-4f84-80f6-0f6d4a00bdf1" />
 
 
+4. Solución y refactorización (síntesis y creación)
+
+para el error 1, en lugar de intentar corregir el problema agregando destructor y manejando manuealmente `new` y `delete[]`, seria mejor eliminar la gestion manual de memoria dinamica dado que el arreglo de estadisticas tiene un tamaño fijo, se reemplazaria:
+
+``` c++
+int* estadisticas;
+```
+por
+```c++
+std::array<int, 3> estadisticas;
+```
+
+esto permitiria almacenar las estadisticas directamente dentro del objeto, evita el uso de `new` y `delete`, permite que la copia del objeto sea segura  
+
+<details>
+	<summary><b>Refactorizado</b></summary>
+
+``` c++
+#include <iostream>
+#include <string>
+#include <array>
+
+class Personaje {
+public:
+    std::string nombre;
+    std::array<int, 3> estadisticas; // [vida, ataque, defensa]
+
+    Personaje(const std::string& n, int vida, int ataque, int defensa)
+        : nombre(n), estadisticas{vida, ataque, defensa} {
+        std::cout << "Constructor: nace " << nombre << std::endl;
+    }
+
+    void imprimir() const {
+        std::cout << "Personaje " << nombre
+            << " [Vida: " << estadisticas[0]
+            << ", ATK: " << estadisticas[1]
+            << ", DEF: " << estadisticas[2]
+            << "]" << std::endl;
+    }
+};
+```
+</details>
+
+para el error 2, seria eliminar el puntero dinamico y usar un cotenedor seguro:
+
+``` c++
+std::array<int, 3> estadisticas;
+```
+
+ahora cuando se hace la copia del heroe, se copia el nombre, los 3 enteros de estadisticas y cada objeto tiene su propio almacenamiento independiente
+
+<details>
+	<summary><b>CODIGO MODIFICADO</b></summary>
+
+``` c++
+#include <iostream>
+#include <string>
+#include <array>
+
+class Personaje {
+public:
+    std::string nombre;
+    std::array<int, 3> estadisticas; // [vida, ataque, defensa]
+
+    // Constructor (sin new, sin delete)
+    Personaje(const std::string& n, int vida, int ataque, int defensa)
+        : nombre(n), estadisticas{ vida, ataque, defensa } {
+        std::cout << "Constructor: nace " << nombre << std::endl;
+    }
+
+    // (No hace falta destructor: no hay memoria dinámica manual)
+    // (No hace falta constructor de copia ni operador de asignación:
+    //  std::string y std::array copian correctamente)
+
+    void imprimir() const {
+        std::cout << "Personaje " << nombre
+            << " [Vida: " << estadisticas[0]
+            << ", ATK: " << estadisticas[1]
+            << ", DEF: " << estadisticas[2]
+            << "]" << std::endl;
+    }
+};
+
+void simularEncuentro() {
+    std::cout << "\n--- Iniciando encuentro ---" << std::endl;
+
+    Personaje heroe("Aragorn", 100, 20, 15);
+    heroe.imprimir();
+
+    // Ahora la copia es segura (copia real de estadisticas)
+    Personaje copiaHeroe = heroe;
+    copiaHeroe.nombre = "Copia de Aragorn";
+
+    copiaHeroe.imprimir();
+
+    std::cout << "Saliendo del encuentro..." << std::endl;
+}
+
+int main() {
+    simularEncuentro();
+    std::cout << "\nSimulación terminada." << std::endl;
+    return 0;
+}
+```
+</details>
+
+5. Justificación de la Solución
+
+Cambio 1: Reemplazar int* estadisticas por std::array<int, 3> estadisticas
+
+Con int*, el arreglo se creaba en el heap con new, pero como no había liberación, el bloque quedaba ocupado incluso después de destruir el objeto.
+Con std::array, las estadísticas ya no están en el heap, sino que quedan almacenadas directamente dentro del objeto.
+Por lo tanto, ya no se reserva memoria dinámica, y no existe nada que liberar manualmente.
+Resultado: no hay fugas de memoria, incluso si se crean miles de personajes.
+¿Por qué esto resuelve la copia superficial?
+Cuando estadisticas era un puntero, copiar un objeto copiaba solo la dirección, no los datos.
+Con std::array, al copiar un Personaje, se copia el contenido real del arreglo (los 3 enteros).
+Resultado: heroe y copiaHeroe tienen estadísticas independientes, evitando bugs donde uno cambia y el otro también.
+
+Cambio 2: Eliminar new y delete de la clase
+
+new/delete manuales son una fuente común de errores en C++ (fugas, doble liberación, punteros colgantes).
+Al eliminarlos, el ciclo de vida de la memoria queda manejado automáticamente por objetos seguros de la STL (std::string, std::array).
+Esto evita crashes impredecibles por corrupción del heap.
 
 ## Bitácora de reflexión
 
 ### Actividad 11
+
 
 
 
