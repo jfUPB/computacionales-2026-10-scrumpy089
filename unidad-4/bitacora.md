@@ -4,21 +4,22 @@
 
 ## Bitácora de proceso de aprendizaje
 
-###Actividad 01
+### Actividad 01
 
 `ofApp.h` se declaran las clases, `ofApp.cpp` se definen las clases
 
-###Actividad 02
+### Actividad 02
 
 
 
 ## Bitácora de aplicación 
 
-###Actividad 03
+### Actividad 03
 
 
 
 ## Bitácora de reflexión
 
-###Actividad 04
+### Actividad 04
+
 
