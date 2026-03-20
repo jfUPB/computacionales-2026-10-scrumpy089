@@ -12,12 +12,24 @@
 
 
 
+### Actividad 03
+
+
+
+### Actividad 04
+
+
+
+### Actividad 05
+
+
+
 ## Bitácora de aplicación 
 
-### Actividad 03
+### Actividad 06
 
 
 
 ## Bitácora de reflexión
 
-### Actividad 04
+### Actividad 07
