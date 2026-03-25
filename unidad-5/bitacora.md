@@ -456,6 +456,61 @@ ofApp::~ofApp() {
 ```
 </details>
 
+---
+
+<details>
+	<summary><b>Evidencia 1 — Herencia en memoria</b></summary>
+
+<img width="964" height="662" alt="image" src="https://github.com/user-attachments/assets/8932898f-6ffe-4eea-83c6-516539656e70" /><br>
+
+En el depurador se observa que el vector almacena un puntero de tipo Particle*, pero el objeto real es `SpiralParticle`, al expandir el objeto se pueden ver los atributos propios de `SpiralParticle` como center, velocity, angle, radius y angularSpeed
+
+</details>
+
+---
+
+<details>
+	<summary><b>Evidencia 2 — La _vtable de tu nuevo tipo</b></summary>
+
+
+
+</details>
+
+---
+
+<details>
+	<summary><b></b></summary>
+	
+</details>
+
+---
+
+<details>
+	<summary><b></b></summary>
+	
+</details>
+
+---
+
+<details>
+	<summary><b></b></summary>
+	
+</details>
+
+---
+
+<details>
+	<summary><b></b></summary>
+	
+</details>
+
+---
+
+<details>
+	<summary><b></b></summary>
+	
+</details>
+
 ## Bitácora de reflexión
 
 ### Actividad 07
