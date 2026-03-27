@@ -536,7 +536,7 @@ Esta evidencia demuestra el polimorfismo en tiempo de ejecución porque muestra 
 
 <img width="807" height="692" alt="image" src="https://github.com/user-attachments/assets/852881f5-1488-43ce-9118-4dc3619b8216" />
 
-Se colocó un breakpoint dentro del método `draw()` de la clase `StarExplosion`, ya que este punto permite inspeccionar el objeto actual (`this`) y observar los atributos heredados de las clases base
+Se colocó un breakpoint dentro del método `draw()` de la clase `RingExplosion`, ya que este punto permite inspeccionar el objeto actual (`this`) y observar los atributos heredados de las clases base
 
 En la captura se observa la jerarquía del objeto:
 - StarExplosion
