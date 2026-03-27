@@ -598,11 +598,19 @@ Esta evidencia demuestra que no hay fuga de memoria porque la implementación re
 <details>
 	<summary><b>Evidencia 7 — Prueba de condición límite</b></summary>
 
-¿Qué pasa cuando el vector de partículas se vacía completamente?
+<img width="434" height="270" alt="image" src="https://github.com/user-attachments/assets/f983ebf3-5371-4e95-a984-6062737a44ff" />
+<img width="946" height="508" alt="image" src="https://github.com/user-attachments/assets/9fc6c713-e442-4aeb-93e2-0f79be19cf89" />
+<img width="933" height="347" alt="image" src="https://github.com/user-attachments/assets/6c388125-32cc-4d38-b986-77b5c22354d3" />
+<img width="1230" height="510" alt="image" src="https://github.com/user-attachments/assets/54437113-f86e-49bd-9301-d2743524b7de" />
+<img width="1181" height="460" alt="image" src="https://github.com/user-attachments/assets/2015b90c-7043-4835-b833-a5924ac697e5" />
 
-<img width="465" height="272" alt="image" src="https://github.com/user-attachments/assets/13c1e431-1f55-448b-ad87-c0cd4d4fa241" />
+Se diseñó una prueba de estrés generando una gran cantidad de partículas al mismo tiempo mediante la tecla espacio, la cual crea aproximadamente 2000 partículas RisingParticle. Esta prueba se eligió para verificar si el sistema puede manejar una gran cantidad de objetos dinámicos sin fallos o problemas de memoria
 
+Se colocó un breakpoint durante el proceso de actualización del vector de partículas para observar el tamaño del vector y verificar el comportamiento del sistema bajo carga alta
 
+En la captura se observa que el vector particles contiene una gran cantidad de elementos (más de 2000), a pesar de esta cantidad, el sistema continúa ejecutando correctamente los métodos `update()` y `draw()` sin errores, también se puede observar que conforme las partículas mueren, el tamaño del vector disminuye progresivamente, lo que demuestra que los objetos se eliminan correctamente
+
+Esta prueba demuestra que el sistema maneja correctamente una condición límite donde se crean muchas partículas simultáneamente. La aplicación continúa funcionando correctamente, las partículas se actualizan sin errores y la memoria se libera conforme las partículas mueren. Esto demuestra que la implementación es robusta y maneja correctamente escenarios extremos
 	
 </details>
 
