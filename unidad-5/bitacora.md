@@ -458,6 +458,8 @@ ofApp::~ofApp() {
 
 ---
 
+FASE 2
+
 <details>
 	<summary><b>Evidencia 1 — Herencia en memoria</b></summary>
 
@@ -472,28 +474,99 @@ En el depurador se observa que el vector almacena un puntero de tipo Particle*, 
 <details>
 	<summary><b>Evidencia 2 — La _vtable de tu nuevo tipo</b></summary>
 
+<img width="976" height="577" alt="image" src="https://github.com/user-attachments/assets/744d5723-d54d-4c60-9c9d-a3646b9b00fb" />
 
+<img width="899" height="552" alt="image" src="https://github.com/user-attachments/assets/8cc1c019-9c68-498c-9d0c-0dfbf65d94ae" />
+
+Detuve la ejecución dentro del método `update()` en el momento en que se crean las partículas de explosión (`CircularExplosion` y `RingExplosion`). Elegí este punto porque en ese momento los objetos ya fueron creados dinámicamente y se encuentran almacenados en el vector `particles`, lo que permite inspeccionar su estructura interna
+
+En las capturas se observa el vector particles, que almacena punteros de tipo Particle*, pero cuyos objetos reales corresponden a diferentes tipos derivados como CircularExplosion y RingExplosion, al expandir cada objeto en el depurador se puede observar el puntero _vfptr, que corresponde al puntero a la tabla virtual del objeto. Dentro de esta tabla aparecen las funciones virtuales que el objeto ejecutará:
+
+Para CircularExplosion:
+
+- destructor → CircularExplosion
+- update → ExplosionParticle::update
+- draw → CircularExplosion::draw
+- isDead → ExplosionParticle::isDead
+- shouldExplode → Particle::shouldExplode
+- getPosition → Particle::getPosition
+- getColor → Particle::getColor
+
+Para RingExplosion:
+
+- destructor → RingExplosion
+- update → ExplosionParticle::update
+- draw → RingExplosion::draw
+- isDead → ExplosionParticle::isDead
+- shouldExplode → Particle::shouldExplode
+- getPosition → Particle::getPosition
+- getColor → Particle::getColor
+
+Se observa que ambas clases comparten varias funciones heredadas, pero la función `draw()` apunta a implementaciones distintas dependiendo del tipo real del objeto
+
+Esta evidencia demuestra comprensión del polimorfismo porque muestra que aunque ambos objetos están almacenados como `Particle*`, cada uno posee su propia tabla virtual. La vtable muestra que el método virtual `draw()` apunta a` CircularExplosion::draw` en un caso y a `RingExplosion::draw` en el otro
 
 </details>
 
 ---
 
 <details>
-	<summary><b></b></summary>
-	
+	<summary><b>Evidencia 3 — Polimorfismo en tiempo de ejecución</b></summary>
+
+<img width="1094" height="618" alt="image" src="https://github.com/user-attachments/assets/3a7cb858-636b-4b2f-9d8e-d726b9849ab4" />
+<img width="958" height="739" alt="image" src="https://github.com/user-attachments/assets/3765b5bb-37e9-480b-95d1-727c6f91904e" />
+
+Se colocó un breakpoint en la llamada al método virtual draw() dentro del ciclo que recorre el vector de partículas. Este punto fue elegido porque es donde ocurre el despacho dinámico de las funciones virtuales, permitiendo verificar qué implementación del método se ejecuta realmente
+
+En la captura se observa que el objeto actual (this) corresponde a un objeto de tipo `StarExplosion`, al utilizar el depurador (Step Into), la ejecución entra directamente al método StarExplosion::draw() y no al método `draw()` de la clase base `Particle` ni de alguna otra clase derivada
+También se puede observar en la ventana de variables que el objeto mantiene la jerarquía StarExplosion -> ExplosionParticle -> Particle
+
+Esta evidencia demuestra el polimorfismo en tiempo de ejecución porque muestra que, aunque el objeto se maneja mediante un puntero `Particle*`, el método ejecutado corresponde al tipo dinámico real (`StarExplosion`). Esto confirma que el despacho dinámico funciona correctamente y que el programa ejecuta la implementación correcta del método virtual dependiendo del tipo real del objeto
+
 </details>
 
 ---
 
 <details>
-	<summary><b></b></summary>
-	
+	<summary><b>Evidencia 4 — Encapsulamiento en el contexto de herencia</b></summary>
+
+<img width="807" height="692" alt="image" src="https://github.com/user-attachments/assets/852881f5-1488-43ce-9118-4dc3619b8216" />
+
+Se colocó un breakpoint dentro del método `draw()` de la clase `StarExplosion`, ya que este punto permite inspeccionar el objeto actual (`this`) y observar los atributos heredados de las clases base
+
+En la captura se observa la jerarquía del objeto:
+- StarExplosion
+	- ExplosionParticle
+		- Particle
+
+Dentro de esta jerarquía se pueden observar los atributos heredados desde la clase base Particle, como:
+
+- position
+- velocity
+- color
+- age
+- lifetime
+- size
+
+Estos atributos son accesibles desde la subclase porque están definidos como `protected`
+
+Esta evidencia demuestra comprensión del encapsulamiento porque muestra que las subclases pueden acceder a los atributos heredados definidos como `protected` o `public`, mientras que los atributos privados no serían accesibles directamente desde la subclase
+
 </details>
 
 ---
 
 <details>
-	<summary><b></b></summary>
+	<summary><b>Evidencia 5 — Ciclo de vida completo de tu partícula</b></summary>
+
+<img width="1214" height="701" alt="image" src="https://github.com/user-attachments/assets/cf6ed10d-5326-40de-82ad-cedebba99864" />
+<img width="863" height="470" alt="image" src="https://github.com/user-attachments/assets/b50af65b-c62d-4826-962f-1137d57165a3" />
+<img width="937" height="397" alt="image" src="https://github.com/user-attachments/assets/fcdb83b6-b194-40d5-a47e-f2d566fc3883" />
+<img width="1085" height="414" alt="image" src="https://github.com/user-attachments/assets/b0bef5ce-6def-4db1-9e6f-6ff40e4a0192" />
+
+Se colocaron breakpoints en tres momentos del ciclo de vida de una partícula: durante su creación cuando se agrega al vector `particles`, durante su actualización en el método `update()`, y durante su eliminación cuando se detecta que ha muerto y se libera su memoria
+
+
 	
 </details>
 
