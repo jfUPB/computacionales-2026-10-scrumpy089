@@ -559,28 +559,50 @@ Esta evidencia demuestra comprensión del encapsulamiento porque muestra que las
 <details>
 	<summary><b>Evidencia 5 — Ciclo de vida completo de tu partícula</b></summary>
 
-<img width="1214" height="701" alt="image" src="https://github.com/user-attachments/assets/cf6ed10d-5326-40de-82ad-cedebba99864" />
+<img width="1193" height="758" alt="image" src="https://github.com/user-attachments/assets/90ffaf69-18be-4817-9eaa-b6430eaf473a" />
 <img width="863" height="470" alt="image" src="https://github.com/user-attachments/assets/b50af65b-c62d-4826-962f-1137d57165a3" />
 <img width="937" height="397" alt="image" src="https://github.com/user-attachments/assets/fcdb83b6-b194-40d5-a47e-f2d566fc3883" />
 <img width="1085" height="414" alt="image" src="https://github.com/user-attachments/assets/b0bef5ce-6def-4db1-9e6f-6ff40e4a0192" />
 
 Se colocaron breakpoints en tres momentos del ciclo de vida de una partícula: durante su creación cuando se agrega al vector `particles`, durante su actualización en el método `update()`, y durante su eliminación cuando se detecta que ha muerto y se libera su memoria
 
+En la primera captura se observa la creación de la partícula mediante `new` y su inserción en el vector particles. El depurador muestra el tamaño del vector y el tipo dinámico del objeto creado
 
+En la segunda captura se observa el objeto durante su ejecución en el método `update()`. Se puede ver cómo cambian variables como la posición, la velocidad y la edad (`age`), demostrando que el objeto mantiene estado y evoluciona en el tiempo
+
+En las ultimas capturas se observa cómo el objeto es eliminado cuando cumple su condición de muerte (`isDead()`), donde se ejecuta `delete` y posteriormente se elimina del vector. El tamaño del vector disminuye y el puntero deja de existir
+
+Esta evidencia demuestra comprensión del ciclo de vida de los objetos dinámicos porque muestra las tres etapas fundamentales: creación en memoria dinámica, modificación del estado durante la ejecución y liberación correcta de memoria al eliminar el objeto. Esto confirma que la implementación gestiona correctamente la memoria y evita objetos persistentes innecesarios
 	
 </details>
 
 ---
 
 <details>
-	<summary><b></b></summary>
-	
+	<summary><b>Evidencia 6 — Sin fugas de memoria</b></summary>
+
+<img width="1427" height="797" alt="image" src="https://github.com/user-attachments/assets/1bc550ec-e35e-4920-937f-1f7573692d0c" />
+<img width="1455" height="846" alt="image" src="https://github.com/user-attachments/assets/c9c1e0b3-4f1e-4354-9368-4e5ee6996568" />
+<img width="1451" height="672" alt="image" src="https://github.com/user-attachments/assets/95865463-419b-4df4-bf35-28e44ad63d9d" />
+
+Se colocaron breakpoints en las instrucciones delete particles[i]; y particles.erase(particles.begin() + i);, porque estas dos líneas son las responsables de liberar la memoria dinámica y retirar el puntero del contenedor
+
+En la primera captura se observa que el vector particles todavía contiene un puntero válido a la partícula que va a eliminarse. En ese momento el tamaño del vector incluye todavía ese elemento, luego, al ejecutar `delete particles[i];`, se libera la memoria dinámica ocupada por el objeto. Después, en la instrucción `particles.erase(particles.begin() + i);`, el puntero correspondiente se elimina del vector. En la ultima captura se observa que el tamaño del vector disminuye y que el elemento ya no se encuentra almacenado en la posición anterior
+
+Esta evidencia demuestra que no hay fuga de memoria porque la implementación realiza correctamente las dos acciones necesarias al destruir una partícula: primero libera la memoria reservada dinámicamente con `delete` y luego elimina el puntero del vector con `erase`. Si faltara cualquiera de estas dos operaciones, habría un problema: o fuga de memoria, o un puntero colgante dentro del contenedor
+
 </details>
 
 ---
 
 <details>
-	<summary><b></b></summary>
+	<summary><b>Evidencia 7 — Prueba de condición límite</b></summary>
+
+¿Qué pasa cuando el vector de partículas se vacía completamente?
+
+<img width="465" height="272" alt="image" src="https://github.com/user-attachments/assets/13c1e431-1f55-448b-ad87-c0cd4d4fa241" />
+
+
 	
 </details>
 
