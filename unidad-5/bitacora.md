@@ -465,7 +465,11 @@ FASE 2
 
 <img width="964" height="662" alt="image" src="https://github.com/user-attachments/assets/8932898f-6ffe-4eea-83c6-516539656e70" /><br>
 
-En el depurador se observa que el vector almacena un puntero de tipo Particle*, pero el objeto real es `SpiralParticle`, al expandir el objeto se pueden ver los atributos propios de `SpiralParticle` como center, velocity, angle, radius y angularSpeed
+Se colocó un breakpoint justo después de crear una instancia de `SpiralParticle` y agregarla al vector `particles`, porque en ese momento el objeto ya está construido y puede inspeccionarse su organización en memoria
+
+En el depurador se observa que el vector almacena un puntero de tipo `Particle*`, pero el objeto real es `SpiralParticle`. Al expandir el objeto se pueden ver atributos propios como `center`, `velocity`, `angle`, `radius` y `angularSpeed`
+
+Esto demuestra la herencia en memoria porque el objeto puede manejarse mediante un puntero a la clase base `Particle`, pero conserva internamente la estructura y atributos específicos de la clase derivada `SpiralParticle`
 
 </details>
 
@@ -539,7 +543,7 @@ En la captura se observa la jerarquía del objeto:
 	- ExplosionParticle
 		- Particle
 
-Dentro de esta jerarquía se pueden observar los atributos heredados desde la clase base Particle, como:
+Dentro de esta jerarquía se pueden observar los atributos heredados desde `ExplosionParticle`, como:
 
 - position
 - velocity
@@ -548,7 +552,7 @@ Dentro de esta jerarquía se pueden observar los atributos heredados desde la cl
 - lifetime
 - size
 
-Estos atributos son accesibles desde la subclase porque están definidos como `protected`
+Estos atributos son accesibles desde `StarExplosion` porque fueron declarados como `protected`
 
 Esta evidencia demuestra comprensión del encapsulamiento porque muestra que las subclases pueden acceder a los atributos heredados definidos como `protected` o `public`, mientras que los atributos privados no serían accesibles directamente desde la subclase
 
@@ -604,7 +608,7 @@ Esta evidencia demuestra que no hay fuga de memoria porque la implementación re
 <img width="1230" height="510" alt="image" src="https://github.com/user-attachments/assets/54437113-f86e-49bd-9301-d2743524b7de" />
 <img width="1181" height="460" alt="image" src="https://github.com/user-attachments/assets/2015b90c-7043-4835-b833-a5924ac697e5" />
 
-Se diseñó una prueba de estrés generando una gran cantidad de partículas al mismo tiempo mediante la tecla espacio, la cual crea aproximadamente 2000 partículas RisingParticle. Esta prueba se eligió para verificar si el sistema puede manejar una gran cantidad de objetos dinámicos sin fallos o problemas de memoria
+Se diseñó una prueba de estrés generando una gran cantidad de partículas al mismo tiempo mediante la tecla espacio, la cual crea aproximadamente 2000 partículas. Esta prueba se eligió para verificar si el sistema puede manejar una gran cantidad de objetos dinámicos sin fallos o problemas de memoria
 
 Se colocó un breakpoint durante el proceso de actualización del vector de partículas para observar el tamaño del vector y verificar el comportamiento del sistema bajo carga alta
 
