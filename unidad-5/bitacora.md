@@ -484,7 +484,7 @@ Esto demuestra la herencia en memoria porque el objeto puede manejarse mediante 
 
 Detuve la ejecución dentro del método `update()` en el momento en que se crean las partículas de explosión (`CircularExplosion` y `RingExplosion`). Elegí este punto porque en ese momento los objetos ya fueron creados dinámicamente y se encuentran almacenados en el vector `particles`, lo que permite inspeccionar su estructura interna
 
-En las capturas se observa el vector particles, que almacena punteros de tipo Particle*, pero cuyos objetos reales corresponden a diferentes tipos derivados como CircularExplosion y RingExplosion, al expandir cada objeto en el depurador se puede observar el puntero _vfptr, que corresponde al puntero a la tabla virtual del objeto. Dentro de esta tabla aparecen las funciones virtuales que el objeto ejecutará:
+En las capturas se observa el vector `particles`, que almacena punteros de tipo `Particle*`, pero cuyos objetos reales corresponden a diferentes tipos derivados como CircularExplosion y RingExplosion, al expandir cada objeto en el depurador se puede observar el puntero _vfptr, que corresponde al puntero a la tabla virtual del objeto. Dentro de esta tabla aparecen las funciones virtuales que el objeto ejecutará:
 
 Para CircularExplosion:
 
@@ -520,9 +520,9 @@ Esta evidencia demuestra comprensión del polimorfismo porque muestra que aunque
 <img width="1094" height="618" alt="image" src="https://github.com/user-attachments/assets/3a7cb858-636b-4b2f-9d8e-d726b9849ab4" />
 <img width="958" height="739" alt="image" src="https://github.com/user-attachments/assets/3765b5bb-37e9-480b-95d1-727c6f91904e" />
 
-Se colocó un breakpoint en la llamada al método virtual draw() dentro del ciclo que recorre el vector de partículas. Este punto fue elegido porque es donde ocurre el despacho dinámico de las funciones virtuales, permitiendo verificar qué implementación del método se ejecuta realmente
+Se colocó un breakpoint en la llamada al método virtual `draw()` dentro del ciclo que recorre el vector de partículas. Este punto fue elegido porque es donde ocurre el despacho dinámico de las funciones virtuales, permitiendo verificar qué implementación del método se ejecuta realmente
 
-En la captura se observa que el objeto actual (this) corresponde a un objeto de tipo `StarExplosion`, al utilizar el depurador (Step Into), la ejecución entra directamente al método StarExplosion::draw() y no al método `draw()` de la clase base `Particle` ni de alguna otra clase derivada
+En la captura se observa que el objeto actual (`this`) corresponde a un objeto de tipo `StarExplosion`, al utilizar el depurador (Step Into (F10)), la ejecución entra directamente al método `StarExplosion::draw()` y no al método `draw()` de la clase base `Particle` ni de alguna otra clase derivada
 También se puede observar en la ventana de variables que el objeto mantiene la jerarquía StarExplosion -> ExplosionParticle -> Particle
 
 Esta evidencia demuestra el polimorfismo en tiempo de ejecución porque muestra que, aunque el objeto se maneja mediante un puntero `Particle*`, el método ejecutado corresponde al tipo dinámico real (`StarExplosion`). Esto confirma que el despacho dinámico funciona correctamente y que el programa ejecuta la implementación correcta del método virtual dependiendo del tipo real del objeto
@@ -589,7 +589,7 @@ Esta evidencia demuestra comprensión del ciclo de vida de los objetos dinámico
 <img width="1455" height="846" alt="image" src="https://github.com/user-attachments/assets/c9c1e0b3-4f1e-4354-9368-4e5ee6996568" />
 <img width="1451" height="672" alt="image" src="https://github.com/user-attachments/assets/95865463-419b-4df4-bf35-28e44ad63d9d" />
 
-Se colocaron breakpoints en las instrucciones delete particles[i]; y particles.erase(particles.begin() + i);, porque estas dos líneas son las responsables de liberar la memoria dinámica y retirar el puntero del contenedor
+Se colocaron breakpoints en las instrucciones `delete particles[i];` y `particles.erase(particles.begin() + i);`, porque estas dos líneas son las responsables de liberar la memoria dinámica y retirar el puntero del contenedor
 
 En la primera captura se observa que el vector particles todavía contiene un puntero válido a la partícula que va a eliminarse. En ese momento el tamaño del vector incluye todavía ese elemento, luego, al ejecutar `delete particles[i];`, se libera la memoria dinámica ocupada por el objeto. Después, en la instrucción `particles.erase(particles.begin() + i);`, el puntero correspondiente se elimina del vector. En la ultima captura se observa que el tamaño del vector disminuye y que el elemento ya no se encuentra almacenado en la posición anterior
 
