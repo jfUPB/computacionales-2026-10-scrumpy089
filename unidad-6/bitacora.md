@@ -487,11 +487,86 @@ La captura evidencia que la creación del objeto no ocurre dispersa por el progr
 ---
 
 <details>
-<summary><b>Evidencia 2 — Tu nuevo estado en la _vtable</b></summary>
-  
+<summary><b>Evidencia 2 — Tu nuevo estado en la _vtable</b></summary><br>
+
+<img width="482" height="155" alt="image" src="https://github.com/user-attachments/assets/e03a7bc2-5b2c-48b3-8841-4030f5384c5a" />
+
+
+NormalState
+<img width="1175" height="547" alt="image" src="https://github.com/user-attachments/assets/fdf10cc7-07f9-4005-a0cc-64812a51d791" />
+
+
+OrbitState
+<img width="1142" height="614" alt="image" src="https://github.com/user-attachments/assets/7bbe35d3-2ccc-4cd0-beb7-9a0e6f475f0f" />
+
+
+La comparación muestra que ambos objetos comparten la misma interfaz base `State`, pero no comparten la misma tabla virtual, en `NormalState`, sus metodos sobreescritos/propios son el destructor, `NormalState::update` y `NormalState::onEnter`, mientras que en `OrbitState`, con las implementaciones del nuevo estado, la `vtable` quedaria con el destructor, `OrbitState::update`, `State::onEnter` y `State::onExit`
+
+Esto demuestra que el patrón State usa polimorfismo porque el puntero state sigue siendo de tipo base `State*`, pero al cambiar el objeto al que apunta también cambia su `vtable`. Gracias a eso, la misma llamada:
+
+``` cpp
+state->update(this);
+```
+ejecuta una función distinta según el estado activo
+
 </details>
 
 ---
+
+<details>
+<summary><b>Evidencia 3 — La cadena Observer → State completa</b></summary>
+
+Esos puntos son reveladores porque permiten seguir el recorrido completo del evento desde la entrada del usuario hasta el cambio del estado interno
+
+en `keyPressed`: `key = 'o'`
+<img width="975" height="510" alt="image" src="https://github.com/user-attachments/assets/e8eff64b-e1fd-4d70-af44-044c408eae46" />
+
+en `notify`: `event = "orbit"`
+<img width="1237" height="620" alt="image" src="https://github.com/user-attachments/assets/cf6833de-93e6-429e-9b70-abeee84e5958" />
+
+en `onNotify`: `event = "orbit"`
+<img width="1229" height="605" alt="image" src="https://github.com/user-attachments/assets/e0fd56fb-6fad-44f5-a3b2-4fffcbe9a75a" />
+<img width="1215" height="754" alt="image" src="https://github.com/user-attachments/assets/15da4af1-f0a7-4f97-8567-b46109907460" />
+
+en `setState`: `newState = State* {OrbitState}`
+<img width="1060" height="643" alt="image" src="https://github.com/user-attachments/assets/f3bbd692-a15a-4ad4-9c86-90f9165f3043" />
+<img width="1026" height="545" alt="image" src="https://github.com/user-attachments/assets/371b6cec-0adf-4b4c-ab6d-9b6c03c743cd" />
+<img width="1020" height="545" alt="image" src="https://github.com/user-attachments/assets/095f5655-07fd-4a31-966a-7a4621fbc186" />
+<img width="1035" height="610" alt="image" src="https://github.com/user-attachments/assets/8d56eb7c-0ad7-4560-a909-609823798d0c" />
+
+
+Al presionar la tecla `o`, `keyPressed` dispara `notify("orbit")`. Ese evento llega al `Subject`, que recorre su vector de observadores y llama `onNotify(event)` sobre cada partícula. Dentro de `Particle::onNotify`, el evento `"orbit"` activa la rama correspondiente y ejecuta `setState(new OrbitState())`. Finalmente, en `setState`, el puntero `state` deja de apuntar al estado anterior y pasa a apuntar al nuevo objeto `OrbitState`
+
+La evidencia muestra que no es una función aislada, sino una cadena completa de colaboración entre patrones. `Observer` transporta el evento desde la entrada del usuario hasta cada partícula, y `State` usa ese evento para reemplazar el objeto de estado activo, cambiando el comportamiento en tiempo de ejecución.
+
+</details>
+
+---
+
+<details>
+<summary><b>Evidencia 4 — Decisión de diseño justificada</b></summary>
+
+Hice que `OrbitState` heredara directamente de `State` y no de `AttractState` o `NormalState`, porque `OrbitState` no es una variante pequeña de otro estado, sino un comportamiento propio
+
+<img width="1028" height="740" alt="image" src="https://github.com/user-attachments/assets/fc0280a0-7c5a-4c4e-ab33-3276afcb3148" />
+<img width="1029" height="744" alt="image" src="https://github.com/user-attachments/assets/92da6064-a2f5-4b7d-88f5-468c9e64f9e1" />
+
+Antes de la asignación, la partícula tiene un estado activo (`NormalState`) y simultáneamente se ha creado un nuevo objeto (`OrbitState`) que será el siguiente estado. Ambos existen en memoria como objetos independientes, cada uno con su propia `vtable`, lo que implica comportamientos distintos.
+
+Durante la ejecución de `setState`, el estado anterior es finalizado con `onExit` y luego destruido con `delete`. Posteriormente, el puntero `state` se reasigna para apuntar al nuevo objeto `OrbitState`.
+
+Después de la asignación, `state` deja de referenciar al objeto anterior y pasa a apuntar exclusivamente al nuevo estado, que será el encargado de definir el comportamiento de la partícula en las siguientes actualizaciones.
+
+La decisión de diseño fue implementar el cambio de comportamiento mediante la creación de un nuevo objeto de estado y la sustitución del puntero state, en lugar de modificar atributos internos de la partícula o usar condicionales
+
+Esta es la mejor opción porque:
+
+- mantiene separados los comportamientos de cada estado
+- evita estructuras condicionales complejas dentro de `Particle`
+- facilita la extensión del sistema, agregar nuevos estados sin modificar código existente
+- aprovecha el polimorfismo y el despacho dinámico para cambiar comportamiento en tiempo de ejecución
+
+</details>
 
 </details>
 
