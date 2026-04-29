@@ -434,8 +434,83 @@ La fórmula x * 2 - 1 transforma el eje horizontal de 0..1 a -1..1, y 1 - y * 2 
 
 ### Actividad 06
 
+Evidencia 1
+
+<img width="1239" height="485" alt="image" src="https://github.com/user-attachments/assets/9f7462db-1da1-464c-bd72-8a7fe5308328" />
+
+Punto de inspección
+
+Detuve la ejecución justo antes de cargar GLAD, después de que GLFW ya había creado la ventana y el contexto OpenGL.
+
+Explicación
+
+En este punto se comprueba que mainWindow ya existe y que glfwMakeContextCurrent(mainWindow) ya activó ese contexto. Esto es importante porque GLAD necesita un contexto activo para poder consultar a los drivers de la GPU y cargar las funciones modernas de OpenGL.
+
+Justificación
+
+GLFW aparece primero porque construye el entorno de trabajo gráfico. GLAD aparece después porque depende de ese entorno para buscar las direcciones reales de las funciones OpenGL. Si intentara cargar GLAD antes, no tendría ningún contexto desde dónde hacerlo y la inicialización fallaría.
+
+---
+
+Evidencia 2
 
 
+<img width="1176" height="629" alt="image" src="https://github.com/user-attachments/assets/95dae147-1839-409f-a07f-ff6bd58338c4" />
+
+<img width="1228" height="613" alt="image" src="https://github.com/user-attachments/assets/908c8098-b9b5-4daf-94de-7a930e911a38" />
+
+Punto de inspección
+
+Detuve el programa dentro de setupTriangle(), en el momento donde el arreglo vertices es enviado al VBO y cuando OpenGL recibe la instrucción de cómo interpretar esos datos.
+
+Explicación
+
+El arreglo vertices contiene las tres posiciones del triángulo en CPU. Con glBufferData() esos nueve valores flotantes son copiados a la memoria de la GPU dentro del VBO. Después, `glVertexAttribPointer(0,3,GL_FLOAT...)` le indica a OpenGL que debe tomar esos datos de tres en tres y conectarlos con el atributo de entrada ubicado en el location 0 del vertex shader.
+
+Justificación
+
+Esto demuestra que el atributo aPos del shader no recibe datos mágicamente: recibe exactamente la información que primero estaba en el arreglo del programa y luego fue transferida al pipeline mediante el VBO y el VAO.
+
+---
+
+Evidencia 3
+
+<img width="1204" height="675" alt="image" src="https://github.com/user-attachments/assets/9c38fd7d-2c05-42bf-800b-56892e6947cb" />
+
+<img width="1144" height="695" alt="image" src="https://github.com/user-attachments/assets/2547d2d6-deb3-4c7f-b847-a062d3aa9755" />
+
+Explicación
+
+En este punto comprobé que los vértices almacenados en el VBO siguen siendo exactamente los mismos, pero antes de dibujar envío nuevos valores al shader mediante uniforms. El uniform offset desplaza el triángulo completo y el uniform ourColor modifica su color.
+
+Justificación
+
+Esto demuestra que el pipeline permite alterar el resultado visual sin reescribir la geometría original. Los uniforms actúan como parámetros dinámicos externos que la GPU usa al momento de ejecutar los shaders.
+
+---
+
+Evidencia 4
+
+canbiando
+
+<img width="772" height="106" alt="image" src="https://github.com/user-attachments/assets/76464583-51e3-4de5-88f5-8a8750c50504" />
+
+por
+<img width="772" height="86" alt="image" src="https://github.com/user-attachments/assets/1b618d33-ba3c-48d9-bf0b-f874699b64cb" />
+
+queda asi
+<img width="402" height="432" alt="image" src="https://github.com/user-attachments/assets/dc0869d0-cdee-4908-a88b-44a7aec43f47" />
+
+Esperaba que el triángulo se desplazara hacia la derecha, llegando al límite del espacio visible de OpenGL. Al ejecutar el programa, el triángulo se movió hasta el borde derecho y quedó parcialmente fuera de la pantalla.
+Concluí que el VBO no cambió; los vértices originales siguen siendo los mismos. Lo que cambió fue el uniform offset, que modificó la posición final dentro del shader.
+
+---
+
+Evidencia 5
+
+por qué un offset va como uniform y no como atributo
+
+Decidí enviar la posición del mouse como uniform porque ese valor afecta al triángulo completo y no a cada vértice de forma independiente. Si hubiera usado atributo, tendría que duplicar el mismo dato para los tres vértices dentro del VBO. En cambio, el uniform permite mantener la geometría base fija y modificarla dinámicamente desde el shader en cada draw call. Esto separa correctamente la información estática de la información dinámica dentro del pipeline.
 
 
 ## Bitácora de reflexión
